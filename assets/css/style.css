@@ -7,7 +7,7 @@
   --wash: #f6f4f1;
   --accent: #b4491f;      /* terracotta */
   --accent-soft: #f4e3db;
-  --slate: #4f6479;       /* second series */
+  --slate: #2f6f9f;       /* second series (validated with accent) */
   --radius: 16px;
   --max: 1080px;
   --display: "Rubik", system-ui, sans-serif;
@@ -138,3 +138,14 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
   .meta { grid-template-columns: 1fr; gap: 12px; }
   .figure .frame { padding: 12px; overflow-x: auto; }
 }
+
+/* ---------- case study additions ---------- */
+.step { display: inline-grid; place-items: center; width: 28px; height: 28px; margin-right: 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font: 600 14px var(--mono); vertical-align: 3px; }
+.prose h2[id] { scroll-margin-top: 72px; }
+.detail { font-size: 15.5px; color: #3a3a3a; border-left: 2px solid var(--line); padding-left: 16px; }
+.detail strong { font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+.system .frame { padding: 12px; }
+.system svg a rect { transition: stroke .15s ease, stroke-width .15s ease; }
+.system svg a:hover rect, .system svg a:focus rect { stroke: #b4491f; stroke-width: 2; }
+.system svg a { cursor: pointer; }
+@media (max-width: 760px) { .system svg { min-width: 680px; } .system figcaption::after { content: " Scroll sideways to see the full diagram."; } }
