@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy-Safe Regions for Denmark · Nora Yin</title>
+  <meta name="description" content="Case study: open-source small-area geographic units for Denmark, built from road networks with privacy thresholds.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="../index.html">Nora Yin</a>
+    <div class="links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#experience">Experience</a>
+      <a href="../index.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <header class="case-head">
+    <p class="eyebrow">Case study · Data for good</p>
+    <h1>Privacy-safe neighborhoods for Denmark</h1>
+    <p class="lead">With Two Sigma Data Clinic and Aalborg University, I helped build open-source geographic units for Denmark: regions that follow real roads and waterways while meeting strict privacy thresholds. We presented the work at SDSC 2022.</p>
+    <dl class="meta">
+      <div><dt>Partners</dt><dd>Two Sigma Data Clinic · Aalborg University (BUILD)</dd></div>
+      <div><dt>Output</dt><dd><a href="https://github.com/tsdataclinic/DenmarkRegions">Open-source code on GitHub</a></dd></div>
+      <div><dt>Methods</dt><dd>OpenStreetMap polygonization, max-p regionalization</dd></div>
+    </dl>
+  </header>
+
+  <article class="prose">
+    <h2>The problem</h2>
+    <p>Danish municipalities are too large and uneven to guide local action. Detailed administrative data exists on a 100 m grid, but individual grid cells break privacy rules: every published unit must contain at least 150 people and 75 households.</p>
+    <p>Clustering grid cells directly did not work. Empty cells were assigned at random, and suburban and rural regions came out oddly shaped and hard to use for analysis.</p>
+
+    <figure class="figure">
+      <div class="placeholder">Figure planned · Before / after: municipality and grid cells vs. road-based privacy-safe regions</div>
+    </figure>
+
+    <h2>Approach</h2>
+    <ol>
+      <li><strong>Polygons from the built environment.</strong> Each municipality is split step by step along the OpenStreetMap road network: motorways and primary roads first, then waterways, secondary and tertiary roads, then residential streets.</li>
+      <li><strong>Map the grid onto the polygons.</strong> We compared a spatial join with interpolation (smooth boundaries, but assumes population is spread evenly within a cell) against a grid overlay (exact counts, less natural edges).</li>
+      <li><strong>Regionalize.</strong> Max-p regionalization with rook contiguity merges polygons until each region meets the 150-person and 75-household threshold.</li>
+      <li><strong>Evaluate.</strong> Checked that the privacy rule held across the past ten years so the units support time-series work, reviewed the distribution of region compactness, and inspected maps visually.</li>
+    </ol>
+
+    <figure class="figure">
+      <div class="placeholder">Figure planned · Road-based subdivision in three steps (illustrative)</div>
+    </figure>
+
+    <h2>Outcome</h2>
+    <p>The regionalization code is open source at <a href="https://github.com/tsdataclinic/DenmarkRegions">github.com/tsdataclinic/DenmarkRegions</a>. The longer-term aim was a standard small-area unit for Denmark, comparable to US census geographies. <span class="todo">TODO: confirm your role; add a public talk link if one exists</span></p>
+
+    <h2>Skills</h2>
+    <ul class="chips">
+      <li>Spatial clustering</li><li>Regionalization</li><li>OpenStreetMap</li><li>Privacy-aware aggregation</li><li>Open source</li>
+    </ul>
+  </article>
+
+  <nav class="pager">
+    <a href="damage-prevention.html">← Damage risk ranking</a>
+    <a href="../index.html#work">All work →</a>
+  </nav>
+</main>
+
+<footer>
+  <div class="wrap"><span>© 2026 Yinuo Yin</span><a href="../index.html#contact">Contact</a></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Single-Family Portfolio Engine · Nora Yin</title>
+  <meta name="description" content="Case study: an end-to-end system turning single-family transaction data into a ranked, budget-constrained, backtested portfolio.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="../index.html">Nora Yin</a>
+    <div class="links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#experience">Experience</a>
+      <a href="../index.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <header class="case-head">
+    <p class="eyebrow">Case study · Real estate investing</p>
+    <h1>Single-family rental: from raw transactions to a simulated portfolio</h1>
+    <p class="lead">I built the end-to-end system a single-family investment team used to decide where to buy: five linked models that turn ~70M transaction records into a ranked, budget-constrained portfolio, then test that portfolio against realized institutional returns.</p>
+    <dl class="meta">
+      <div><dt>Role</dt><dd>Lead data scientist, design through production</dd></div>
+      <div><dt>Scope</dt><dd>~70M transactions · ~400 US metros · zip-level output</dd></div>
+      <div><dt>Methods</dt><dd>Causal matching, repeat-sales index, gradient boosting, simulation</dd></div>
+    </dl>
+  </header>
+
+  <article class="prose">
+    <h2>The problem</h2>
+    <p>Build-to-rent and homebuilder deals need a defensible view of which zip codes will deliver the best yield and IRR. The data works against you: the same house rarely sells twice in a short window, most homes have not transacted recently, and tax and rent assumptions vary county by county.</p>
+
+    <figure class="figure">
+      <div class="frame"><img src="../assets/img/fig-sfr-pipeline.svg" alt="Diagram: sales and leases, tax assessor, macro and census, and market fundamentals data feed four models (matching, repeat-sales index, price forecast, valuation), which combine into zip-level yield and IRR and then a simulated portfolio."></div>
+      <figcaption>Four data groups feed four models; their outputs combine into one zip-level yield and IRR, which drives the portfolio simulation.</figcaption>
+    </figure>
+
+    <h2>How it works</h2>
+    <ol>
+      <li><strong>Measure growth.</strong> Coarsened Exact Matching groups comparable homes (same census tract, similar age, bedrooms and living area) into a synthetic "same house." A Case-Shiller-style repeat-measures regression turns those groups into a same-store growth index for prices and rents. It became the standard growth input across the firm's single-family work.</li>
+      <li><strong>Forecast prices.</strong> A bagged ensemble of ~100 gradient-boosted models forecasts home price appreciation for ~400 US metros at several horizons. The target is normalized across markets, so the model learns which metros outperform rather than re-learning the national cycle. A residualized short-horizon variant limits reliance on momentum when momentum breaks down.</li>
+      <li><strong>Value every home.</strong> Two gradient-boosted regressors estimate current price and rent relative to each home's own census tract, then adjust by the metro index. The whole national universe can be valued every quarter, not only homes that recently sold. Validation uses a five-year entry-to-exit backtest rather than in-sample fit.</li>
+      <li><strong>Translate into returns.</strong> Growth, forecast and valuation chain into zip-level yield and IRR, with effective tax rates derived from assessor microdata instead of a flat assumption.</li>
+      <li><strong>Simulate the portfolio.</strong> Candidate homes are ranked by forecast IRR and bought until a fixed quarterly budget is exhausted. The simulated portfolio's returns are then compared with realized returns of large institutional single-family owners over the same periods.</li>
+    </ol>
+
+    <figure class="figure">
+      <div class="placeholder">Figure planned · "Same house" matching sketch: comparable homes grouped within a census tract</div>
+    </figure>
+    <figure class="figure">
+      <div class="placeholder">Figure planned · Same-store growth index, prices vs. rents (illustrative, synthetic data)</div>
+    </figure>
+    <figure class="figure">
+      <div class="placeholder">Figure planned · Portfolio simulation: rank by IRR, fill the budget, compare with a benchmark</div>
+    </figure>
+
+    <h2>Data foundation</h2>
+    <p>When our primary data provider overhauled its systems, I led the team's response: mapped the full schema change, then moved five separate models from ad hoc notebook joins into one managed, validated pipeline with a monitoring tearsheet.</p>
+
+    <h2>What it enabled</h2>
+    <p>The framework was used directly in build-to-rent and homebuilder deal underwriting as the systematic basis for zip-level selection. <span class="todo">TODO: decide whether to describe the benchmark comparison</span></p>
+
+    <h2>Skills</h2>
+    <ul class="chips">
+      <li>Causal matching (CEM)</li><li>Index construction</li><li>Gradient boosting</li><li>Ensemble forecasting</li><li>Automated valuation</li><li>Portfolio simulation</li><li>Data engineering</li>
+    </ul>
+  </article>
+
+  <nav class="pager">
+    <a href="../index.html#work">← All work</a>
+    <a href="industrial.html">Next: Industrial models →</a>
+  </nav>
+</main>
+
+<footer>
+  <div class="wrap"><span>© 2026 Yinuo Yin</span><a href="../index.html#contact">Contact</a></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Excavation Damage Risk Ranking · Nora Yin</title>
+  <meta name="description" content="Case study: a rare-event classifier ranking 811 excavation tickets by risk of damaging underground gas lines.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="../index.html">Nora Yin</a>
+    <div class="links">
+      <a href="../index.html#work">Work</a>
+      <a href="../index.html#experience">Experience</a>
+      <a href="../index.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <header class="case-head">
+    <p class="eyebrow">Case study · Utilities · Urbint</p>
+    <h1>Ranking excavation tickets by damage risk</h1>
+    <p class="lead">At Urbint I led a rare-event classification model that ranks 811 excavation tickets from highest to lowest risk of damaging underground gas lines, so damage-prevention teams can send inspectors where damage is most likely. The model reached an AUC of about 0.70; the top 1% of ranked tickets captured 20% of damage incidents, and the top 10% captured 60%.</p>
+    <dl class="meta">
+      <div><dt>Role</dt><dd>Led modeling, with Product and Engineering</dd></div>
+      <div><dt>Users</dt><dd>Utility damage-prevention and field inspection teams</dd></div>
+      <div><dt>Methods</dt><dd>Rare-event classification, H3 spatial features, KNN joins</dd></div>
+    </dl>
+  </header>
+
+  <article class="prose">
+    <h2>The problem</h2>
+    <p>Before digging, excavators file an 811 ("call before you dig") ticket. A gas utility receives far more tickets than its damage-prevention team can visit, and actual damages are rare. The team needs a ranked list, not a yes/no label, to decide where on-site inspection time goes.</p>
+
+    <figure class="figure">
+      <div class="placeholder">Figure planned · Ticket-to-inspection flow: 811 ticket → features → risk score → ranked list → field visit</div>
+    </figure>
+
+    <h2>Approach</h2>
+    <ol>
+      <li><strong>Inputs.</strong> Ticket details, excavator history, location of buried assets, weather and past damage outcomes. <span class="todo">TODO: confirm feature groups</span></li>
+      <li><strong>Spatial pipeline.</strong> H3 hexagonal indexing, weather integration and nearest-neighbor spatial joins, built as reusable pipelines shared across models.</li>
+      <li><strong>Model.</strong> A rare-event classifier trained on historical tickets and outcomes. <span class="todo">TODO: model type, class-imbalance handling, validation scheme</span></li>
+      <li><strong>Output.</strong> A risk ranking delivered through client-facing dashboards, with KPIs defined together with Product and Engineering.</li>
+    </ol>
+
+    <figure class="figure">
+      <div class="placeholder">Figure planned · Cumulative gains: share of incidents captured vs. share of tickets reviewed (1% → 20%, 10% → 60%)</div>
+    </figure>
+    <figure class="figure">
+      <div class="placeholder">Figure planned · H3 hexagon grid with neighbor features (illustrative)</div>
+    </figure>
+
+    <h2>What it enabled</h2>
+    <p>Damage-prevention teams could focus inspections on the riskiest excavations instead of working tickets in arrival order. <span class="todo">TODO: any client outcome you can share</span></p>
+
+    <h2>Related work</h2>
+    <p>Time-series forecasting models reaching 80%+ accuracy across service regions, used for workforce planning.</p>
+
+    <h2>Skills</h2>
+    <ul class="chips">
+      <li>Rare-event classification</li><li>Geospatial features (H3, KNN)</li><li>ML pipelines</li><li>Time-series forecasting</li><li>Product analytics</li>
+    </ul>
+  </article>
+
+  <nav class="pager">
+    <a href="industrial.html">← Industrial</a>
+    <a href="data-clinic.html">Next: Data for good →</a>
+  </nav>
+</main>
+
+<footer>
+  <div class="wrap"><span>© 2026 Yinuo Yin</span><a href="../index.html#contact">Contact</a></div>
+</footer>
+</body>
+</html>

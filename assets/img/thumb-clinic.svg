@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" role="img" aria-label="Regions split along roads">
+<rect width="480" height="300" fill="#f6f4f1"/>
+<polygon points="40,40 200,30 230,140 60,160" fill="#f4e3db" stroke="#161616" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="200,30 440,50 420,120 230,140" fill="#ffffff" stroke="#161616" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="60,160 230,140 250,270 50,260" fill="#ffffff" stroke="#161616" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="230,140 420,120 440,270 250,270" fill="#f4e3db" stroke="#161616" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="300,160 380,150 390,230 310,240" fill="#b4491f" stroke="#161616" stroke-width="2" stroke-linejoin="round"/>
+<path d="M20 150 C 140 140, 300 135, 460 115" fill="none" stroke="#4f6479" stroke-width="5"/>
+</svg>

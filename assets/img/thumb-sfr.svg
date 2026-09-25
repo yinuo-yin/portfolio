@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" role="img" aria-label="Grid of houses with selected homes highlighted">
+<rect width="480" height="300" fill="#f6f4f1"/>
+<path d="M40 66 L56 50 L72 66 V88 H40 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M92 66 L108 50 L124 66 V88 H92 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M144 66 L160 50 L176 66 V88 H144 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M196 66 L212 50 L228 66 V88 H196 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M248 66 L264 50 L280 66 V88 H248 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M300 66 L316 50 L332 66 V88 H300 Z" fill="#b4491f" stroke="#b4491f" stroke-width="2" stroke-linejoin="round"/>
+<path d="M352 66 L368 50 L384 66 V88 H352 Z" fill="#b4491f" stroke="#b4491f" stroke-width="2" stroke-linejoin="round"/>
+<path d="M404 66 L420 50 L436 66 V88 H404 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M40 124 L56 108 L72 124 V146 H40 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M92 124 L108 108 L124 124 V146 H92 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M144 124 L160 108 L176 124 V146 H144 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M196 124 L212 108 L228 124 V146 H196 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M248 124 L264 108 L280 124 V146 H248 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M300 124 L316 108 L332 124 V146 H300 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M352 124 L368 108 L384 124 V146 H352 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M404 124 L420 108 L436 124 V146 H404 Z" fill="#b4491f" stroke="#b4491f" stroke-width="2" stroke-linejoin="round"/>
+<path d="M40 182 L56 166 L72 182 V204 H40 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M92 182 L108 166 L124 182 V204 H92 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M144 182 L160 166 L176 182 V204 H144 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M196 182 L212 166 L228 182 V204 H196 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M248 182 L264 166 L280 182 V204 H248 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M300 182 L316 166 L332 182 V204 H300 Z" fill="#b4491f" stroke="#b4491f" stroke-width="2" stroke-linejoin="round"/>
+<path d="M352 182 L368 166 L384 182 V204 H352 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M404 182 L420 166 L436 182 V204 H404 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M40 240 L56 224 L72 240 V262 H40 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M92 240 L108 224 L124 240 V262 H92 Z" fill="#b4491f" stroke="#b4491f" stroke-width="2" stroke-linejoin="round"/>
+<path d="M144 240 L160 224 L176 240 V262 H144 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M196 240 L212 224 L228 240 V262 H196 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M248 240 L264 224 L280 240 V262 H248 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M300 240 L316 224 L332 240 V262 H300 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M352 240 L368 224 L384 240 V262 H352 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+<path d="M404 240 L420 224 L436 240 V262 H404 Z" fill="#ffffff" stroke="#b9b3aa" stroke-width="2" stroke-linejoin="round"/>
+</svg>
