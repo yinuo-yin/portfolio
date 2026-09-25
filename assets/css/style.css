@@ -58,7 +58,8 @@ a { color: inherit; }
 .hero h1 { font: 800 clamp(40px, 6vw, 64px)/1.02 var(--display); text-transform: uppercase; margin: 0 0 16px; letter-spacing: -.01em; }
 .eyebrow { font: 500 13px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
 .hero .role { font: 600 15px var(--mono); letter-spacing: .08em; text-transform: uppercase; margin: 0 0 20px; }
-.hero .pitch { font-size: 19px; color: var(--muted); max-width: 34ch; margin: 0 0 28px; }
+.hero .pitch { font-size: 19px; color: #3a3a3a; max-width: 44ch; margin: 0 0 12px; }
+.hero .pitch-note { font-size: 16px; color: var(--muted); max-width: 44ch; margin: 0 0 28px; }
 .actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 .btn {
   display: inline-block; padding: 10px 22px; border-radius: 999px;
