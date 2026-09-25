@@ -21,3 +21,7 @@ Preview locally: `python3 -m http.server` in this folder, then open http://local
 - No vendor names, internal model names, or performance numbers from current work.
 - Charts are illustrative and built from synthetic data.
 - Raw source material lives in `private/`, which is git-ignored and never committed.
+
+## Credits
+
+- US outline: [us-atlas](https://github.com/topojson/us-atlas) (ISC license), simplified in `scripts/data/`.

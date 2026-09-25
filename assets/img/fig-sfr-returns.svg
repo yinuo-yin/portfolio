@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="541.113281pt" height="238.126547pt" viewBox="0 0 541.113281 238.126547" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-09-25T18:19:49.152849</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 238.126547 
+L 541.113281 238.126547 
+L 541.113281 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 39.663281 207.198203 
+L 532.473281 207.198203 
+L 532.473281 27.378203 
+L 39.663281 27.378203 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 62.063736 207.198203 
+L 97.432875 207.198203 
+L 97.432875 70.192489 
+L 62.063736 70.192489 
+z
+" clip-path="url(#p80edc8e7c5)" style="fill: #b4491f"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 121.0123 90.743346 
+L 156.381439 90.743346 
+L 156.381439 70.192489 
+L 121.0123 70.192489 
+z
+" clip-path="url(#p80edc8e7c5)" style="fill: #c9c4bd"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 179.960865 114.719346 
+L 215.330004 114.719346 
+L 215.330004 90.743346 
+L 179.960865 90.743346 
+z
+" clip-path="url(#p80edc8e7c5)" style="fill: #c9c4bd"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 238.90943 130.132489 
+L 274.278568 130.132489 
+L 274.278568 114.719346 
+L 238.90943 114.719346 
+z
+" clip-path="url(#p80edc8e7c5)" style="fill: #c9c4bd"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 297.857994 138.695346 
+L 333.227133 138.695346 
+L 333.227133 130.132489 
+L 297.857994 130.132489 
+z
+" clip-path="url(#p80edc8e7c5)" style="fill: #c9c4bd"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 356.806559 207.198203 
+L 392.175698 207.198203 
+L 392.175698 138.695346 
+L 356.806559 138.695346 
+z
+" clip-path="url(#p80edc8e7c5)" style="fill: #b4491f"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 415.755123 138.695346 
+L 451.124262 138.695346 
+L 451.124262 65.054775 
+L 415.755123 65.054775 
+z
+" clip-path="url(#p80edc8e7c5)" style="fill: #2f6f9f"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 474.703688 207.198203 
+L 510.072827 207.198203 
+L 510.072827 65.054775 
+L 474.703688 65.054775 
+z
+" clip-path="url(#p80edc8e7c5)" style="fill: #b4491f"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1"/>
+     <g id="text_1">
+      <text style="font-size: 9px; font-family: 'Rubik', 'DejaVu Sans'; fill: #5c5c5c" transform="translate(56.507211 217.536797)">Gross rent</text>
+      <text style="font-size: 9px; font-family: 'Rubik', 'DejaVu Sans'; fill: #5c5c5c" transform="translate(68.958852 227.614828)">yield</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2"/>
+     <g id="text_2">
+      <text style="font-size: 9px; font-family: 'Rubik', 'DejaVu Sans'; fill: #5c5c5c" transform="translate(110.091635 217.536797)">Vacancy and</text>
+      <text style="font-size: 9px; font-family: 'Rubik', 'DejaVu Sans'; fill: #5c5c5c" transform="translate(108.552495 227.614828)">management</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3"/>
+     <g id="text_3">
+      <text style="font-size: 9px; font-family: 'Rubik', 'DejaVu Sans'; fill: #5c5c5c" transform="translate(178.605512 217.536797)">Property</text>
+      <text style="font-size: 9px; font-family: 'Rubik', 'DejaVu Sans'; fill: #5c5c5c" transform="translate(190.4602 227.614828)">tax</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4"/>
+     <g id="text_4">
+      <text style="font-size: 9px; font-family: 'Rubik', 'DejaVu Sans'; text-anchor: middle; fill: #5c5c5c" x="256.593999" y="217.536797" transform="rotate(-0 256.593999 217.536797)">Capex</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5"/>
+     <g id="text_5">
+      <text style="font-size: 9px; font-family: 'Rubik', 'DejaVu Sans'; fill: #5c5c5c" transform="translate(293.464439 217.536797)">Insurance</text>
+      <text style="font-size: 9px; font-family: 'Rubik', 'DejaVu Sans'; fill: #5c5c5c" transform="translate(293.657798 227.614828)">and other</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6"/>
+     <g id="text_6">
+      <text style="font-size: 9px; font-family: 'Rubik', 'DejaVu Sans'; text-anchor: middle; fill: #5c5c5c" x="374.491128" y="217.536797" transform="rotate(-0 374.491128 217.536797)">Net yield</text>
+     </g>
+    </g>
+    <g id="xtick_7">
+     <g id="line2d_7"/>
+     <g id="text_7">
+      <text style="font-size: 9px; font-family: 'Rubik', 'DejaVu Sans'; fill: #5c5c5c" transform="translate(414.403286 217.536797)">Forecast</text>
+      <text style="font-size: 9px; font-family: 'Rubik', 'DejaVu Sans'; fill: #5c5c5c" transform="translate(405.349146 227.614828)">appreciation</text>
+     </g>
+    </g>
+    <g id="xtick_8">
+     <g id="line2d_8"/>
+     <g id="text_8">
+      <text style="font-size: 9px; font-family: 'Rubik', 'DejaVu Sans'; fill: #5c5c5c" transform="translate(484.807164 217.536797)">IRR</text>
+      <text style="font-size: 9px; font-family: 'Rubik', 'DejaVu Sans'; fill: #5c5c5c" transform="translate(467.082085 227.614828)">(simplified)</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_9">
+      <path d="M 39.663281 207.198203 
+L 532.473281 207.198203 
+" clip-path="url(#p80edc8e7c5)" style="fill: none; stroke: #e4e2de; stroke-width: 0.8; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_10"/>
+     <g id="text_9">
+      <text style="font-size: 10.5px; font-family: 'Rubik', 'DejaVu Sans'; text-anchor: end; fill: #5c5c5c" x="36.163281" y="211.187383" transform="rotate(-0 36.163281 211.187383)">0</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_11">
+      <path d="M 39.663281 172.946775 
+L 532.473281 172.946775 
+" clip-path="url(#p80edc8e7c5)" style="fill: none; stroke: #e4e2de; stroke-width: 0.8; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_12"/>
+     <g id="text_10">
+      <text style="font-size: 10.5px; font-family: 'Rubik', 'DejaVu Sans'; text-anchor: end; fill: #5c5c5c" x="36.163281" y="176.935954" transform="rotate(-0 36.163281 176.935954)">2</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_13">
+      <path d="M 39.663281 138.695346 
+L 532.473281 138.695346 
+" clip-path="url(#p80edc8e7c5)" style="fill: none; stroke: #e4e2de; stroke-width: 0.8; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_14"/>
+     <g id="text_11">
+      <text style="font-size: 10.5px; font-family: 'Rubik', 'DejaVu Sans'; text-anchor: end; fill: #5c5c5c" x="36.163281" y="142.684526" transform="rotate(-0 36.163281 142.684526)">4</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_15">
+      <path d="M 39.663281 104.443917 
+L 532.473281 104.443917 
+" clip-path="url(#p80edc8e7c5)" style="fill: none; stroke: #e4e2de; stroke-width: 0.8; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_16"/>
+     <g id="text_12">
+      <text style="font-size: 10.5px; font-family: 'Rubik', 'DejaVu Sans'; text-anchor: end; fill: #5c5c5c" x="36.163281" y="108.433097" transform="rotate(-0 36.163281 108.433097)">6</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_17">
+      <path d="M 39.663281 70.192489 
+L 532.473281 70.192489 
+" clip-path="url(#p80edc8e7c5)" style="fill: none; stroke: #e4e2de; stroke-width: 0.8; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_18"/>
+     <g id="text_13">
+      <text style="font-size: 10.5px; font-family: 'Rubik', 'DejaVu Sans'; text-anchor: end; fill: #5c5c5c" x="36.163281" y="74.181669" transform="rotate(-0 36.163281 74.181669)">8</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_19">
+      <path d="M 39.663281 35.94106 
+L 532.473281 35.94106 
+" clip-path="url(#p80edc8e7c5)" style="fill: none; stroke: #e4e2de; stroke-width: 0.8; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_20"/>
+     <g id="text_14">
+      <text style="font-size: 10.5px; font-family: 'Rubik', 'DejaVu Sans'; text-anchor: end; fill: #5c5c5c" x="36.163281" y="39.93024" transform="rotate(-0 36.163281 39.93024)">10</text>
+     </g>
+    </g>
+    <g id="text_15">
+     <text style="font-size: 10.5px; font-family: 'Rubik', 'DejaVu Sans'; text-anchor: middle; fill: #5c5c5c" x="16.618359" y="117.288203" transform="rotate(-90 16.618359 117.288203)">% of home value (illustrative)</text>
+    </g>
+   </g>
+   <g id="patch_11">
+    <path d="M 39.663281 207.198203 
+L 39.663281 27.378203 
+" style="fill: none; stroke: #e4e2de; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 39.663281 207.198203 
+L 532.473281 207.198203 
+" style="fill: none; stroke: #e4e2de; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 9.5px; font-family: 'Rubik', 'DejaVu Sans'; text-anchor: middle; fill: #161616" x="79.748305" y="66.767346" transform="rotate(-0 79.748305 66.767346)">8.0%</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 9.5px; font-family: 'Rubik', 'DejaVu Sans'; text-anchor: middle; fill: #5c5c5c" x="138.69687" y="66.767346" transform="rotate(-0 138.69687 66.767346)">-1.2</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 9.5px; font-family: 'Rubik', 'DejaVu Sans'; text-anchor: middle; fill: #5c5c5c" x="197.645434" y="87.318203" transform="rotate(-0 197.645434 87.318203)">-1.4</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 9.5px; font-family: 'Rubik', 'DejaVu Sans'; text-anchor: middle; fill: #5c5c5c" x="256.593999" y="111.294203" transform="rotate(-0 256.593999 111.294203)">-0.9</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 9.5px; font-family: 'Rubik', 'DejaVu Sans'; text-anchor: middle; fill: #5c5c5c" x="315.542564" y="126.707346" transform="rotate(-0 315.542564 126.707346)">-0.5</text>
+   </g>
+   <g id="text_21">
+    <text style="font-size: 9.5px; font-family: 'Rubik', 'DejaVu Sans'; text-anchor: middle; fill: #161616" x="374.491128" y="135.270203" transform="rotate(-0 374.491128 135.270203)">4.0%</text>
+   </g>
+   <g id="text_22">
+    <text style="font-size: 9.5px; font-family: 'Rubik', 'DejaVu Sans'; text-anchor: middle; fill: #5c5c5c" x="433.439693" y="61.629632" transform="rotate(-0 433.439693 61.629632)">+4.3</text>
+   </g>
+   <g id="text_23">
+    <text style="font-size: 9.5px; font-family: 'Rubik', 'DejaVu Sans'; text-anchor: middle; fill: #161616" x="492.388257" y="61.629632" transform="rotate(-0 492.388257 61.629632)">8.3%</text>
+   </g>
+   <g id="text_24">
+    <text style="font-weight: 600; font-size: 11.5px; font-family: 'Rubik', 'DejaVu Sans'; text-anchor: start; fill: #161616" x="39.663281" y="17.378203" transform="rotate(-0 39.663281 17.378203)">From rent to return, one zip code (illustrative)</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p80edc8e7c5">
+   <rect x="39.663281" y="27.378203" width="492.81" height="179.82"/>
+  </clipPath>
+ </defs>
+</svg>

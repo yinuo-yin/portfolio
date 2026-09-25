@@ -33,86 +33,93 @@
   <!-- The system first: every box links to its section below -->
   <figure class="figure system">
     <div class="frame">
-      <svg viewBox="0 0 760 380" role="img" aria-labelledby="sys-title sys-desc" font-family="Rubik, system-ui, sans-serif" font-size="13">
+      <svg viewBox="0 0 760 386" role="img" aria-labelledby="sys-title sys-desc" font-family="Rubik, system-ui, sans-serif" font-size="13">
         <title id="sys-title">The single-family system, built end to end</title>
-        <desc id="sys-desc">Four data sources feed a data foundation layer. It feeds three models: a growth index, a price forecast and a valuation model. Their outputs combine into zip-level yield and IRR, which drives a portfolio simulation.</desc>
+        <desc id="sys-desc">Four data sources, including sales and leases from multiple providers for national coverage, feed a data foundation layer. It feeds four components: a growth index, a price forecast, a valuation model and capex assumptions. Together they produce yield and IRR by zip code, which a portfolio simulation uses to pick homes.</desc>
         <defs>
           <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a847c"/></marker>
         </defs>
-        <rect x="6" y="6" width="748" height="368" rx="14" fill="none" stroke="#b4491f" stroke-width="1.5" stroke-dasharray="6 5"/>
+        <rect x="6" y="6" width="748" height="372" rx="14" fill="none" stroke="#b4491f" stroke-width="1.5" stroke-dasharray="6 5"/>
         <text x="26" y="32" font-family="Roboto Mono, monospace" font-size="11" font-weight="600" letter-spacing="1.2" fill="#b4491f">ONE SYSTEM · DESIGNED, BUILT AND OWNED END TO END</text>
 
         <!-- data -->
         <g fill="#fff" stroke="#8a847c" stroke-width="1.25">
-          <rect x="28" y="48" width="164" height="40" rx="8"/><rect x="208" y="48" width="164" height="40" rx="8"/>
-          <rect x="388" y="48" width="164" height="40" rx="8"/><rect x="568" y="48" width="164" height="40" rx="8"/>
+          <rect x="28" y="46" width="164" height="50" rx="8"/><rect x="208" y="46" width="164" height="50" rx="8"/>
+          <rect x="388" y="46" width="164" height="50" rx="8"/><rect x="568" y="46" width="164" height="50" rx="8"/>
         </g>
         <g text-anchor="middle" fill="#5c5c5c" font-size="12.5">
-          <text x="110" y="72">Sales and leases</text><text x="290" y="72">Tax assessor</text>
-          <text x="470" y="72">Macro and census</text><text x="650" y="72">Market fundamentals</text>
+          <text x="110" y="67">Sales and leases</text>
+          <text x="110" y="84" font-size="11">multiple sources, national</text>
+          <text x="290" y="76">Tax assessor</text>
+          <text x="470" y="76">Macro and census</text><text x="650" y="76">Market fundamentals</text>
         </g>
         <g fill="none" stroke="#8a847c" stroke-width="1.25">
-          <path d="M110 88V104" marker-end="url(#arr)"/><path d="M290 88V104" marker-end="url(#arr)"/>
-          <path d="M470 88V104" marker-end="url(#arr)"/><path d="M650 88V104" marker-end="url(#arr)"/>
-          <path d="M140 146V166" marker-end="url(#arr)"/><path d="M380 146V166" marker-end="url(#arr)"/>
-          <path d="M620 146V166" marker-end="url(#arr)"/>
-          <path d="M140 222V242M380 222V242M620 222V242M140 242H620"/>
-          <path d="M248 242V262" marker-end="url(#arr)"/>
-          <path d="M368 290H414" marker-end="url(#arr)"/>
+          <path d="M110 96V112" marker-end="url(#arr)"/><path d="M290 96V112" marker-end="url(#arr)"/>
+          <path d="M470 96V112" marker-end="url(#arr)"/><path d="M650 96V112" marker-end="url(#arr)"/>
+          <path d="M110 154V174" marker-end="url(#arr)"/><path d="M290 154V174" marker-end="url(#arr)"/>
+          <path d="M470 154V174" marker-end="url(#arr)"/><path d="M650 154V174" marker-end="url(#arr)"/>
+          <path d="M110 230V250M290 230V250M470 230V250M650 230V250M110 250H650"/>
+          <path d="M248 250V270" marker-end="url(#arr)"/>
+          <path d="M368 299H414" marker-end="url(#arr)"/>
         </g>
 
         <!-- foundation -->
         <a href="#s0">
-          <rect x="28" y="106" width="704" height="40" rx="8" fill="#f6f4f1" stroke="#8a847c" stroke-width="1.25"/>
-          <text x="380" y="131" text-anchor="middle" fill="#161616"><tspan font-family="Roboto Mono, monospace" fill="#b4491f" font-weight="600">0</tspan>  Data foundation: cleaning, schema mapping, validated pipeline, monitoring</text>
+          <rect x="28" y="114" width="704" height="40" rx="8" fill="#f6f4f1" stroke="#8a847c" stroke-width="1.25"/>
+          <text x="380" y="139" text-anchor="middle" fill="#161616"><tspan font-family="Roboto Mono, monospace" fill="#b4491f" font-weight="600">0</tspan>  Data foundation: cleaning, schema mapping, validated pipeline, monitoring</text>
         </a>
 
-        <!-- models -->
+        <!-- components -->
         <a href="#s1">
-          <rect x="28" y="168" width="224" height="54" rx="8" fill="#fff" stroke="#8a847c" stroke-width="1.25"/>
-          <text x="140" y="191" text-anchor="middle" font-weight="600" fill="#161616"><tspan font-family="Roboto Mono, monospace" fill="#b4491f">1</tspan>  Growth index</text>
-          <text x="140" y="209" text-anchor="middle" font-size="11.5" fill="#5c5c5c">matching + repeat sales</text>
+          <rect x="28" y="176" width="164" height="54" rx="8" fill="#fff" stroke="#8a847c" stroke-width="1.25"/>
+          <text x="110" y="199" text-anchor="middle" font-weight="600" fill="#161616"><tspan font-family="Roboto Mono, monospace" fill="#b4491f">1</tspan>  Growth index</text>
+          <text x="110" y="217" text-anchor="middle" font-size="11.5" fill="#5c5c5c">matching + repeat sales</text>
         </a>
         <a href="#s2">
-          <rect x="268" y="168" width="224" height="54" rx="8" fill="#fff" stroke="#8a847c" stroke-width="1.25"/>
-          <text x="380" y="191" text-anchor="middle" font-weight="600" fill="#161616"><tspan font-family="Roboto Mono, monospace" fill="#b4491f">2</tspan>  Price forecast</text>
-          <text x="380" y="209" text-anchor="middle" font-size="11.5" fill="#5c5c5c">~400 metros, several horizons</text>
+          <rect x="208" y="176" width="164" height="54" rx="8" fill="#fff" stroke="#8a847c" stroke-width="1.25"/>
+          <text x="290" y="199" text-anchor="middle" font-weight="600" fill="#161616"><tspan font-family="Roboto Mono, monospace" fill="#b4491f">2</tspan>  Price forecast</text>
+          <text x="290" y="217" text-anchor="middle" font-size="11.5" fill="#5c5c5c">~400 metros, ranked</text>
         </a>
         <a href="#s3">
-          <rect x="508" y="168" width="224" height="54" rx="8" fill="#fff" stroke="#8a847c" stroke-width="1.25"/>
-          <text x="620" y="191" text-anchor="middle" font-weight="600" fill="#161616"><tspan font-family="Roboto Mono, monospace" fill="#b4491f">3</tspan>  Valuation (AVM)</text>
-          <text x="620" y="209" text-anchor="middle" font-size="11.5" fill="#5c5c5c">price and rent, every home</text>
+          <rect x="388" y="176" width="164" height="54" rx="8" fill="#fff" stroke="#8a847c" stroke-width="1.25"/>
+          <text x="470" y="199" text-anchor="middle" font-weight="600" fill="#161616"><tspan font-family="Roboto Mono, monospace" fill="#b4491f">3</tspan>  Valuation (AVM)</text>
+          <text x="470" y="217" text-anchor="middle" font-size="11.5" fill="#5c5c5c">price + rent, every home</text>
+        </a>
+        <a href="#s4">
+          <rect x="568" y="176" width="164" height="54" rx="8" fill="#fff" stroke="#8a847c" stroke-width="1.25"/>
+          <text x="650" y="199" text-anchor="middle" font-weight="600" fill="#161616"><tspan font-family="Roboto Mono, monospace" fill="#b4491f">4</tspan>  Capex assumptions</text>
+          <text x="650" y="217" text-anchor="middle" font-size="11.5" fill="#5c5c5c">cost to own and maintain</text>
         </a>
 
-        <!-- outputs -->
-        <a href="#s4">
-          <rect x="128" y="264" width="240" height="54" rx="8" fill="#fff" stroke="#8a847c" stroke-width="1.25"/>
-          <text x="248" y="287" text-anchor="middle" font-weight="600" fill="#161616"><tspan font-family="Roboto Mono, monospace" fill="#b4491f">4</tspan>  Yield and IRR</text>
-          <text x="248" y="305" text-anchor="middle" font-size="11.5" fill="#5c5c5c">by zip code</text>
+        <!-- output and use -->
+        <a href="#output">
+          <rect x="128" y="272" width="240" height="54" rx="8" fill="#fff" stroke="#161616" stroke-width="1.5"/>
+          <text x="248" y="295" text-anchor="middle" font-weight="600" fill="#161616">Yield and IRR by zip code</text>
+          <text x="248" y="313" text-anchor="middle" font-size="11.5" fill="#5c5c5c">the system's output</text>
         </a>
-        <a href="#s5">
-          <rect x="416" y="264" width="240" height="54" rx="8" fill="#f4e3db" stroke="#b4491f" stroke-width="2"/>
-          <text x="536" y="287" text-anchor="middle" font-weight="600" fill="#161616"><tspan font-family="Roboto Mono, monospace" fill="#b4491f">5</tspan>  Portfolio simulation</text>
-          <text x="536" y="305" text-anchor="middle" font-size="11.5" fill="#5c5c5c">budget-constrained backtest</text>
+        <a href="#use">
+          <rect x="416" y="272" width="240" height="54" rx="8" fill="#f4e3db" stroke="#b4491f" stroke-width="2"/>
+          <text x="536" y="295" text-anchor="middle" font-weight="600" fill="#161616">Portfolio simulation</text>
+          <text x="536" y="313" text-anchor="middle" font-size="11.5" fill="#5c5c5c">how the output is used</text>
         </a>
-        <text x="380" y="352" text-anchor="middle" font-size="12" fill="#5c5c5c">Output used in build-to-rent and homebuilder deal underwriting</text>
+        <text x="380" y="360" text-anchor="middle" font-size="12" fill="#5c5c5c">Used in build-to-rent and homebuilder deal underwriting</text>
       </svg>
     </div>
-    <figcaption>Every box is part of one system I built and maintained. Select a stage to jump to it.</figcaption>
+    <figcaption>Every box is part of one system I built and maintained. Select a box to jump to it.</figcaption>
   </figure>
 
   <dl class="meta">
     <div><dt>Role</dt><dd>Owner of the full system: design, build, production, maintenance</dd></div>
     <div><dt>Scope</dt><dd>~70M transactions · ~400 US metros · zip-level output</dd></div>
-    <div><dt>Methods</dt><dd>Causal matching, repeat-sales index, gradient-boosted ensembles, simulation</dd></div>
+    <div><dt>Methods</dt><dd>Coarsened exact matching, Case-Shiller index, hedonic regression, weighted ensembles, walk-forward backtesting, simulation</dd></div>
   </dl>
 
   <article class="prose">
     <h2>The problem</h2>
-    <p>Build-to-rent and homebuilder deals need a defensible answer to one question: which zip codes will deliver the best yield and IRR? The data makes that hard. The same house rarely sells twice in a short window, most homes have not sold recently, and taxes and rents vary county by county. No single model answers the question; it takes a chain of them that agree on the same data.</p>
+    <p>Build-to-rent and homebuilder deals need a defensible answer to one question: which zip codes will deliver the best yield and IRR? The data makes that hard. The same house rarely sells twice in a short window, most homes have not sold recently, and taxes, rents and upkeep costs vary county by county. No single model answers the question; it takes a chain of them that agree on the same data.</p>
 
     <h2 id="s0"><span class="step">0</span> Data foundation</h2>
-    <p>Everything downstream depends on clean, consistent inputs. When our primary data provider overhauled its systems, I mapped the full schema change and moved five separate models from ad hoc notebook joins into one managed, validated pipeline with a monitoring tearsheet.</p>
+    <p>Everything downstream depends on clean, consistent inputs. Sales and lease records come from multiple sources, combined so the system covers the whole country rather than the markets any one source covers well. When our primary data provider overhauled its systems, I mapped the full schema change and moved five separate models from ad hoc notebook joins into one managed, validated pipeline with a monitoring tearsheet.</p>
 
     <h2 id="s1"><span class="step">1</span> Measure growth: a same-store index</h2>
     <p>To measure how prices and rents really change, you need to compare the same house over time, but few homes sell twice. I built a synthetic "same house": comparable homes grouped together, whose consecutive sales act like repeat sales of one home.</p>
@@ -125,36 +132,57 @@
       <div class="frame"><img src="../assets/img/fig-sfr-index.svg" alt="Line chart of a synthetic same-store price index and rent index from 2010 to 2024, both starting at 100."></div>
       <figcaption>Illustrative, synthetic data. The index separates price and rent growth, which later feed yield and IRR.</figcaption>
     </figure>
+    <p><strong>Validation.</strong> Two checks confirm the index measures what it should. First, matched cells must be tight: the coefficient of variation of price per square foot within each cell should be far lower than across the whole tract. Second, the index must agree with the market: its growth is compared with published house price indices on FRED, measured by R².</p>
+    <figure class="figure">
+      <div class="frame"><img src="../assets/img/fig-sfr-validation.svg" alt="Left: histogram showing matched cells have much lower coefficient of variation than whole tracts. Right: scatter of our index growth against a published index, closely following the 45-degree line."></div>
+      <figcaption>Illustrative, synthetic data showing the two validation checks.</figcaption>
+    </figure>
 
     <h2 id="s2"><span class="step">2</span> Forecast prices</h2>
-    <p>The forecast has to say which metros will do better than others, not just whether the whole country goes up. So it is trained to predict each metro's growth relative to all metros at the same point in time.</p>
-    <p class="detail"><strong>Under the hood.</strong> A bagged ensemble of ~100 gradient-boosted models, with feature groups split across members so their errors are less correlated. The target is normalized cross-sectionally for ~400 metros at several horizons. A residualized short-horizon variant removes trend continuation so the model does not lean on momentum exactly when momentum breaks.</p>
+    <p>This is where the investment edge comes from. The forecast has to say which metros will do better than others, not just whether the whole country goes up, and the ranking has to hold up out of sample. Three things make it reliable: it is trained on each metro's growth relative to all metros, it is judged only on rigorous walk-forward backtests, and it combines many models into a weighted ensemble so no single model's mistakes drive the ranking.</p>
+    <p class="detail"><strong>Under the hood.</strong> Gradient-boosted (LightGBM) models forecast growth for ~400 metros at several horizons, with the target normalized cross-sectionally at each point in time. Features are selected by out-of-sample performance, and feature groups are split across ensemble members so their errors are less correlated. Members are weighted by walk-forward backtest performance: each fold trains only on the past and scores the next period. A residualized short-horizon variant removes trend continuation so the model does not lean on momentum exactly when momentum breaks.</p>
     <figure class="figure">
       <div class="frame"><img src="../assets/img/fig-sfr-forecast.svg" alt="Two panels: raw metro price growth mostly moves together with the national cycle; after normalization, the spread shows which metros consistently beat the average."></div>
       <figcaption>Illustrative, synthetic data. Normalizing the target strips out the shared cycle and leaves the ranking signal.</figcaption>
     </figure>
+    <figure class="figure">
+      <div class="frame"><img src="../assets/img/fig-sfr-backtest.svg" alt="Left: walk-forward backtest folds, each training on the past and testing on the next period. Right: rank correlation by test period, steadier for the weighted ensemble than for individual models."></div>
+      <figcaption>Illustrative, synthetic data. Walk-forward testing and ensemble weighting are what make the rankings dependable period after period.</figcaption>
+    </figure>
 
     <h2 id="s3"><span class="step">3</span> Value every home</h2>
     <p>Returns depend on today's price and rent for each home, including the many that have not sold in years. The valuation model estimates both for the full national universe every quarter.</p>
-    <p class="detail"><strong>Under the hood.</strong> Two gradient-boosted regressors (price and rent) trained on values relative to each home's own census tract over a trailing window, then adjusted by the metro index. This isolates what is specific to the property from the market trend. Validation uses a five-year entry-to-exit backtest rather than in-sample fit.</p>
-
-    <h2 id="s4"><span class="step">4</span> Turn it into returns</h2>
-    <p>Growth, forecast and valuation chain into one number investors act on: expected yield and IRR by zip code.</p>
-    <p class="detail"><strong>Under the hood.</strong> Rent and price estimates set the entry yield; the forecast drives appreciation; effective property tax rates come from assessor microdata rather than a flat assumption. The result is a zip-level yield and IRR table used directly in deal work.</p>
-
-    <h2 id="s5"><span class="step">5</span> Simulate the portfolio</h2>
-    <p>To test whether the whole chain picks good homes, I simulated how a buyer following it would have done. Candidates are ranked by forecast IRR and bought until a fixed quarterly budget runs out; the simulated portfolio is then compared with realized returns of large institutional single-family owners over the same periods. Across the backtest periods, the simulated portfolio's median IRR tracked above that benchmark.</p>
+    <p class="detail"><strong>Under the hood.</strong> A hedonic regression framework, fit with two gradient-boosted models (price and rent). Each target is measured relative to the home's own census tract over a trailing window and adjusted by the metro index, which separates what is specific to the property from the market trend. The model then explains that property premium from the home's features. Validation uses a five-year entry-to-exit backtest rather than in-sample fit.</p>
     <figure class="figure">
-      <div class="frame"><img src="../assets/img/fig-sfr-simulation.svg" alt="Left: candidate homes ranked by forecast IRR, with the top group bought until the budget is exhausted. Right: simulated portfolio median IRR versus a benchmark over eight backtest periods."></div>
+      <div class="frame"><img src="../assets/img/fig-sfr-avm.svg" alt="Left: raw sale prices for homes in two tracts rise with the market and differ by neighborhood. Right: after removing tract level and market trend, the remaining property premium rises with living area, fit by a hedonic line."></div>
+      <figcaption>Illustrative, synthetic data. Stripping out neighborhood and market leaves the part of value the home's own features explain.</figcaption>
+    </figure>
+
+    <h2 id="s4"><span class="step">4</span> Capex assumptions</h2>
+    <p>Rent is not return: owning a home costs money every year. Capital expenditure assumptions estimate what it takes to bring each home to rentable condition and keep it there, so yields reflect what an owner would actually earn. <span class="todo">TODO: add how capex was estimated</span></p>
+
+    <h2 id="output">Output: yield and IRR by zip code</h2>
+    <p>Growth, forecast, valuation and capex chain into the numbers investors act on: expected yield and IRR for every zip code, refreshed each quarter.</p>
+    <p class="detail"><strong>Under the hood.</strong> Rent and price estimates set the gross yield; vacancy, management, property tax, capex and insurance bring it to a net yield; the forecast adds expected appreciation. Effective property tax rates come from assessor microdata rather than a flat assumption.</p>
+    <figure class="figure">
+      <div class="frame"><img src="../assets/img/fig-sfr-returns.svg" alt="Waterfall chart: gross rent yield of 8 percent, minus vacancy and management, property tax, capex and insurance, gives a 4 percent net yield; adding forecast appreciation gives a simplified IRR of about 8.3 percent."></div>
+      <figcaption>Illustrative numbers for one zip code, not actual assumptions. IRR shown as net yield plus appreciation for simplicity.</figcaption>
+    </figure>
+
+    <h2 id="use">How it's used: portfolio simulation</h2>
+    <p>To test whether the whole system picks good homes, I simulated how a buyer following it would have done. Candidate homes are ranked by forecast IRR and bought from the top until a fixed quarterly budget runs out. Real-world limits apply: the portfolio cannot take more than a set share of the available listings in any one market, so once a market hits its cap, the next-best homes elsewhere are bought instead.</p>
+    <p>The simulated portfolio is benchmarked against the realized returns of large institutional single-family owners over the same periods. Across the backtest periods, its median IRR tracked above theirs.</p>
+    <figure class="figure">
+      <div class="frame"><img src="../assets/img/fig-sfr-simulation.svg" alt="Left: candidate homes ranked by forecast IRR; top homes are bought, some are skipped because their market reached its cap, and buying stops when the budget is exhausted. Right: simulated portfolio median IRR versus institutional owners over eight backtest periods."></div>
       <figcaption>Illustrative, synthetic data showing the method, not actual results.</figcaption>
     </figure>
 
     <h2>What it enabled</h2>
-    <p>A single, systematic framework for zip-level selection, used directly in build-to-rent and homebuilder deal underwriting. Because I owned every stage, a change anywhere (a new data release, a model update) could be traced through to its effect on the final portfolio.</p>
+    <p>A single, systematic framework that ranks every zip code in the country by expected return, used directly in build-to-rent and homebuilder deal underwriting. Because I owned every stage, a change anywhere (a new data release, a model update) could be traced through to its effect on the final portfolio.</p>
 
     <h2>Skills</h2>
     <ul class="chips">
-      <li>System design</li><li>Causal matching (CEM)</li><li>Index construction</li><li>Gradient-boosted ensembles</li><li>Automated valuation</li><li>Portfolio simulation</li><li>Data pipelines</li>
+      <li>System design</li><li>Coarsened Exact Matching</li><li>Case-Shiller repeat-sales index</li><li>Hedonic regression</li><li>LightGBM ensembles</li><li>Walk-forward backtesting</li><li>Automated valuation (AVM)</li><li>Portfolio simulation</li><li>Data pipelines</li>
     </ul>
   </article>
 

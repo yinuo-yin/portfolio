@@ -151,9 +151,63 @@ def thumb_clinic():
     (OUT / "thumb-clinic.svg").write_text(svg(w, h, "\n".join(parts), "Regions split along roads"))
 
 
+def thumb_sfr_map():
+    """US map with a dot per 'zip code', shaded by a synthetic IRR field.
+    Outline: us-atlas (ISC license), contiguous US, Albers projection."""
+    import json
+    from matplotlib.path import Path as MPath
+    rings = json.loads((Path(__file__).resolve().parent / "data" / "us-nation-albers.json").read_text())["rings"]
+    xs = [x for r in rings for x, _ in r]
+    ys = [y for r in rings for _, y in r]
+    x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
+    W, H = 480, 300
+    s = min((W - 40) / (x1 - x0), (H - 50) / (y1 - y0))
+    ox = (W - s * (x1 - x0)) / 2 - s * x0
+    oy = 18 - s * y0
+    T = lambda x, y: (ox + s * x, oy + s * y)
+    paths = [MPath([T(x, y) for x, y in r]) for r in rings]
+
+    random.seed(5)
+    bumps = [(random.uniform(60, 420), random.uniform(40, 250), random.uniform(25, 60), random.uniform(0.5, 1.0)) for _ in range(9)]
+    def irr(x, y):
+        v = sum(a * math.exp(-((x - bx) ** 2 + (y - by) ** 2) / (2 * r * r)) for bx, by, r, a in bumps)
+        return v + random.uniform(-0.12, 0.12)
+    ramp = ["#f6e2d9", "#eab7a0", "#d98661", "#c4602f", "#8f3413"]  # light -> dark, one hue
+
+    body = []
+    for r in rings:
+        pts = " ".join(f"{T(x, y)[0]:.1f},{T(x, y)[1]:.1f}" for x, y in r)
+        body.append(f'<polygon points="{pts}" fill="#ffffff" stroke="{LINE}" stroke-width="1"/>')
+    dots = []
+    step = 5.6
+    y = 10.0
+    row = 0
+    while y < H:
+        x = 10.0 + (step / 2 if row % 2 else 0)
+        while x < W:
+            if any(p.contains_point((x, y)) for p in paths):
+                dots.append((x, y, irr(x, y)))
+            x += step
+        y += step * 0.87
+        row += 1
+    # quantile bins so most zips are mid/low and a few clusters stand out
+    vals = sorted(v for _, _, v in dots)
+    cuts = [vals[int(q * (len(vals) - 1))] for q in (0.35, 0.62, 0.82, 0.94)]
+    for x, y, v in dots:
+        k = sum(v > c for c in cuts)
+        body.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="1.9" fill="{ramp[k]}"/>')
+    # legend
+    lx, ly = W - 150, H - 22
+    for i, c in enumerate(ramp):
+        body.append(f'<rect x="{lx + 40 + i * 16}" y="{ly - 7}" width="14" height="8" rx="2" fill="{c}"/>')
+    body.append(f'<text x="{lx + 34}" y="{ly}" text-anchor="end" font-family="Roboto Mono, monospace" font-size="9" fill="#5c5c5c">IRR low</text>')
+    body.append(f'<text x="{lx + 124}" y="{ly}" font-family="Roboto Mono, monospace" font-size="9" fill="#5c5c5c">high</text>')
+    (OUT / "thumb-sfr.svg").write_text(svg(W, H, "\n".join(body), "Map of the contiguous US with every zip code shaded by forecast IRR (illustrative)"))
+
+
 if __name__ == "__main__":
     hero()
-    thumb_sfr()
+    thumb_sfr_map()
     thumb_industrial()
     thumb_urbint()
     thumb_clinic()
