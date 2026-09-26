@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Excavation Damage Risk Ranking · Nora Yin</title>
-  <meta name="description" content="Case study: a rare-event classifier ranking 811 excavation tickets by risk of damaging underground gas lines.">
+  <meta name="description" content="Case study: a rare-event classifier that ranks 811 excavation tickets by the risk of damaging underground gas lines, so field teams inspect the riskiest digs first.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -27,46 +27,111 @@
   <header class="case-head">
     <p class="eyebrow">Case study · Utilities · Urbint</p>
     <h1>Ranking excavation tickets by damage risk</h1>
-    <p class="lead">At Urbint I led a rare-event classification model that ranks 811 excavation tickets from highest to lowest risk of damaging underground gas lines, so damage-prevention teams can send inspectors where damage is most likely. The model reached an AUC of about 0.70; the top 1% of ranked tickets captured 20% of damage incidents, and the top 10% captured 60%.</p>
-    <dl class="meta">
-      <div><dt>Role</dt><dd>Led modeling, with Product and Engineering</dd></div>
-      <div><dt>Users</dt><dd>Utility damage-prevention and field inspection teams</dd></div>
-      <div><dt>Methods</dt><dd>Rare-event classification, H3 spatial features, KNN joins</dd></div>
-    </dl>
+    <p class="lead">At Urbint I led a rare-event model that ranks 811 excavation tickets from highest to lowest risk of damaging underground gas lines, so a utility's damage-prevention team can send inspectors where damage is most likely. The model reached an AUC of about 0.70; the top 1% of ranked tickets captured 20% of damages, and the top 10% captured 60%.</p>
   </header>
+
+  <figure class="figure system">
+    <div class="frame">
+      <svg viewBox="0 0 760 250" role="img" aria-labelledby="dp-title dp-desc" font-family="Rubik, system-ui, sans-serif" font-size="13">
+        <title id="dp-title">Where the model sits in the damage-prevention workflow</title>
+        <desc id="dp-desc">An excavator files an 811 ticket. Features are built from the ticket, the excavator's history, nearby gas assets, weather and terrain. The risk model scores the ticket, tickets are ranked daily, and field teams inspect the riskiest digs. Damage outcomes flow back to retrain the model.</desc>
+        <defs><marker id="dpa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a847c"/></marker></defs>
+        <g fill="#fff" stroke="#8a847c" stroke-width="1.25">
+          <rect x="16" y="56" width="120" height="64" rx="8"/>
+          <rect x="164" y="24" width="168" height="128" rx="8"/>
+          <rect x="468" y="56" width="120" height="64" rx="8"/>
+          <rect x="616" y="56" width="128" height="64" rx="8"/>
+        </g>
+        <rect x="360" y="56" width="80" height="64" rx="8" fill="#f4e3db" stroke="#b4491f" stroke-width="2"/>
+        <g fill="none" stroke="#8a847c" stroke-width="1.25">
+          <path d="M136 88H160" marker-end="url(#dpa)"/><path d="M332 88H356" marker-end="url(#dpa)"/>
+          <path d="M440 88H464" marker-end="url(#dpa)"/><path d="M588 88H612" marker-end="url(#dpa)"/>
+          <path d="M680 120V200H400V124" marker-end="url(#dpa)" stroke-dasharray="5 4"/>
+        </g>
+        <g text-anchor="middle" fill="#161616" font-weight="600">
+          <text x="76" y="84">811 ticket</text><text x="248" y="46">Features</text>
+          <text x="400" y="84">Risk</text><text x="400" y="100">model</text>
+          <text x="528" y="84">Daily ranked</text><text x="528" y="100">ticket list</text>
+          <text x="680" y="84">Field teams</text><text x="680" y="100">inspect first</text>
+        </g>
+        <text x="76" y="104" text-anchor="middle" fill="#5c5c5c" font-size="11.5">filed before digging</text>
+        <g fill="#5c5c5c" font-size="11.5">
+          <text x="180" y="70">· ticket and work type</text><text x="180" y="88">· excavator history</text>
+          <text x="180" y="106">· nearby gas assets</text><text x="180" y="124">· weather and terrain</text>
+          <text x="180" y="142">· free-text remarks</text>
+        </g>
+        <text x="540" y="222" text-anchor="middle" fill="#5c5c5c" font-size="11.5">damage outcomes and field feedback retrain the model</text>
+      </svg>
+    </div>
+    <figcaption>The model sits between ticket intake and the field team's daily plan.</figcaption>
+  </figure>
+
+  <dl class="meta">
+    <div><dt>Role</dt><dd>Led modeling end to end, with Product, Engineering and the client's field team</dd></div>
+    <div><dt>Users</dt><dd>Utility damage-prevention and field inspection teams</dd></div>
+    <div><dt>Methods</dt><dd>Gradient-boosted trees, class weighting, n-gram text features, geospatial joins, cumulative gains</dd></div>
+  </dl>
 
   <article class="prose">
     <h2>The problem</h2>
-    <p>Before digging, excavators file an 811 ("call before you dig") ticket. A gas utility receives far more tickets than its damage-prevention team can visit, and actual damages are rare. The team needs a ranked list, not a yes/no label, to decide where on-site inspection time goes.</p>
+    <p>Before digging, an excavator files an 811 ("call before you dig") ticket. A gas utility receives far more tickets than its damage-prevention team can visit, and actual damages are rare. The team needs a ranked list, not a yes/no label, to decide where limited inspection time goes each day.</p>
 
+    <h2 id="data"><span class="step">1</span> Clean and link messy records</h2>
+    <p>Damages had to be linked back to the tickets that caused them, and the link was a ticket number typed by hand in the field. Entries like "unknown", "?", "forgot to get it" or a bare year were common, so I built rule-based cleaning to recover valid links and drop the rest. Excavator names were normalized with fuzzy matching so one contractor's history was not split across spellings.</p>
+    <p class="detail"><strong>Under the hood.</strong> Six years of tickets and damage reports. Midway through that history the client switched ticketing software, which changed what several key fields meant; features that depended on those fields were checked before and after the switch rather than trusted blindly.</p>
+
+    <h2 id="features"><span class="step">2</span> Build features that describe the dig</h2>
+    <p>Each ticket is described from five angles: who is digging, what work they are doing, where it is relative to buried gas lines, the conditions on the day, and when it was called in.</p>
+    <table class="spec">
+      <thead><tr><th>Feature group</th><th>Examples</th></tr></thead>
+      <tbody>
+        <tr><td>Excavator history</td><td>Past tickets, past damages, damage rate, size tier</td></tr>
+        <tr><td>Work</td><td>Work type, equipment, ticket type and priority, length of remarks</td></tr>
+        <tr><td>Gas assets</td><td>Distance to nearest main and service line; pipe diameter, pressure, material, install year</td></tr>
+        <tr><td>Conditions</td><td>Precipitation, temperature, humidity, terrain slope</td></tr>
+        <tr><td>Timing</td><td>Hour, weekday, month, holidays, notice time</td></tr>
+      </tbody>
+    </table>
+    <p>Location features come from reusable geospatial pipelines: H3 hexagonal indexing, weather integration, and nearest-neighbor joins from each ticket to the gas assets around it.</p>
     <figure class="figure">
-      <div class="placeholder">Figure planned · Ticket-to-inspection flow: 811 ticket → features → risk score → ranked list → field visit</div>
+      <div class="frame"><img src="../assets/img/fig-dp-assets.svg" alt="Map sketch of gas mains and service lines with scattered ticket locations; one new ticket is joined by dashed lines to its three nearest gas assets."></div>
+      <figcaption>Illustrative. Each ticket inherits the distance to, and attributes of, the nearest buried gas assets.</figcaption>
     </figure>
 
-    <h2>Approach</h2>
-    <ol>
-      <li><strong>Inputs.</strong> Ticket details, excavator history, location of buried assets, weather and past damage outcomes. <span class="todo">TODO: confirm feature groups</span></li>
-      <li><strong>Spatial pipeline.</strong> H3 hexagonal indexing, weather integration and nearest-neighbor spatial joins, built as reusable pipelines shared across models.</li>
-      <li><strong>Model.</strong> A rare-event classifier trained on historical tickets and outcomes. <span class="todo">TODO: model type, class-imbalance handling, validation scheme</span></li>
-      <li><strong>Output.</strong> A risk ranking delivered through client-facing dashboards, with KPIs defined together with Product and Engineering.</li>
-    </ol>
+    <h2 id="model"><span class="step">3</span> Model a rare event</h2>
+    <p>Damages are a small fraction of tickets, so a model that simply predicts "no damage" would look accurate and be useless. The model is judged instead on how many damages land at the top of its ranking.</p>
+    <p class="detail"><strong>Under the hood.</strong> Gradient-boosted trees (LightGBM in the first version, then XGBoost) with class weighting for the imbalance. A later version added text features: word n-grams (1 to 5 words) from a combined field of work type, equipment and excavator, joined with the strongest standard features. Text caught patterns that coded categories missed, such as routine work described in free text.</p>
+    <figure class="figure">
+      <div class="codeblock" role="img" aria-label="Example of turning ticket text into n-gram features">
+        <p class="cb-label">Ticket text (made-up)</p>
+        <p class="cb-line">WATER SERVICE REPL · MINI EXCAVATOR · PRIVATE CONTRACTOR</p>
+        <p class="cb-label">Word n-grams</p>
+        <p class="cb-line"><span>water</span> <span>water service</span> <span>service repl</span> <span>mini excavator</span> <span>private contractor</span> …</p>
+        <p class="cb-label">Model input</p>
+        <p class="cb-line">sparse counts per n-gram + excavator, asset, weather and timing features</p>
+      </div>
+      <figcaption>How free text becomes model input.</figcaption>
+    </figure>
 
+    <h2 id="eval"><span class="step">4</span> Evaluate the way the field team works</h2>
+    <p>The field team works down the list from the top, so the key metric is the cumulative gains curve: what share of damages is caught when inspecting the top 1%, 5% or 10% of tickets. AUC is reported alongside it. Before rollout, scores went through several months of field validation with the client.</p>
     <figure class="figure">
-      <div class="placeholder">Figure planned · Cumulative gains: share of incidents captured vs. share of tickets reviewed (1% → 20%, 10% → 60%)</div>
+      <div class="frame"><img src="../assets/img/fig-dp-gains.svg" alt="Cumulative gains curve rising steeply: the top 1 percent of tickets captures 20 percent of damages and the top 10 percent captures 60 percent, far above the random-order diagonal."></div>
+      <figcaption>The two marked points are the reported results; the shape between them is illustrative.</figcaption>
     </figure>
-    <figure class="figure">
-      <div class="placeholder">Figure planned · H3 hexagon grid with neighbor features (illustrative)</div>
-    </figure>
+
+    <h2 id="feedback"><span class="step">5</span> Listen to the field</h2>
+    <p>After deployment, the client flagged cases that felt wrong: municipal excavators and large contractors with strong safety programs scored too high, and routine hydro-vacuum work scored too high. I turned each complaint into a testable hypothesis and ran a model review. All three held up: those excavators had high historical damage rates but had recently improved, hydro-vacuum tickets really did have low damage rates, and a data quality issue was inflating their scores. The fixes (text features, re-tuned class weighting and cleaner inputs) addressed the feedback and improved performance.</p>
 
     <h2>What it enabled</h2>
-    <p>Damage-prevention teams could focus inspections on the riskiest excavations instead of working tickets in arrival order. <span class="todo">TODO: any client outcome you can share</span></p>
+    <p>A daily risk ranking delivered through client-facing dashboards, with KPIs defined together with Product and Engineering. Damage-prevention teams could focus inspections on the riskiest excavations instead of working tickets in arrival order.</p>
 
     <h2>Related work</h2>
     <p>Time-series forecasting models reaching 80%+ accuracy across service regions, used for workforce planning.</p>
 
     <h2>Skills</h2>
     <ul class="chips">
-      <li>Rare-event classification</li><li>Geospatial features (H3, KNN)</li><li>ML pipelines</li><li>Time-series forecasting</li><li>Product analytics</li>
+      <li>Rare-event classification</li><li>XGBoost and LightGBM</li><li>Class-imbalance weighting</li><li>N-gram text features</li><li>Fuzzy entity matching</li><li>H3 and nearest-neighbor joins</li><li>Cumulative gains evaluation</li><li>Client-facing model review</li>
     </ul>
   </article>
 

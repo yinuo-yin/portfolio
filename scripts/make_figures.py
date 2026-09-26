@@ -493,6 +493,74 @@ def ind_terciles():
     save(fig, "fig-ind-terciles.svg")
 
 
+# ---------------------------------------------------------------- damage prevention
+
+def dp_gains():
+    """Cumulative gains: share of damages captured vs. share of tickets inspected.
+    Anchored on the two published points (1% -> 20%, 10% -> 60%); the rest of the
+    curve is illustrative."""
+    xk = np.array([0, 1, 3, 5, 10, 15, 20, 30, 40, 50])
+    yk = np.array([0, 20, 33, 42, 60, 69, 76, 85, 91, 95])
+    xs = np.linspace(0, 50, 300)
+    ys = np.interp(xs, xk, yk)
+    ys = np.convolve(np.r_[np.zeros(6), ys, np.full(6, ys[-1])], np.ones(13) / 13, mode="valid")
+    ys[0] = 0
+    fig, ax = plt.subplots(figsize=(7.6, 3.4))
+    ax.plot(xs, xs, color=QUIET, linewidth=1.6, linestyle=(0, (4, 3)), label="Random order")
+    ax.plot(xs, ys, color=ACCENT, linewidth=2.6, label="Model ranking")
+    for x, y in [(1, 20), (10, 60)]:
+        ax.scatter([x], [y], s=60, color=ACCENT, edgecolor="white", linewidth=2, zorder=3)
+    ax.annotate("top 1% of tickets\n→ 20% of damages", xy=(1, 20), xytext=(4.5, 8),
+                fontsize=9.5, color=INK, arrowprops=dict(arrowstyle="-", color=MUTED, lw=0.8))
+    ax.annotate("top 10% → 60%", xy=(10, 60), xytext=(14, 50),
+                fontsize=9.5, color=INK, arrowprops=dict(arrowstyle="-", color=MUTED, lw=0.8))
+    ax.set_xlim(0, 50); ax.set_ylim(0, 100)
+    ax.set_xlabel("Share of tickets inspected, highest risk first (%)")
+    ax.set_ylabel("Share of damages captured (%)")
+    ax.set_title("Cumulative gains: inspect the riskiest tickets first")
+    ax.legend(loc="lower right", fontsize=9.5)
+    fig.tight_layout()
+    save(fig, "fig-dp-gains.svg")
+
+
+def dp_assets():
+    """Nearest-neighbor join from a ticket to buried gas assets (illustrative)."""
+    rng = np.random.default_rng(22)
+    fig, ax = plt.subplots(figsize=(7.6, 3.4))
+    # gas mains (thick) and services (thin)
+    mains = [np.array([[-4, -1.2], [4, -0.6]]), np.array([[-1.5, -2.2], [-1.2, 2.2]])]
+    for m in mains:
+        ax.plot(m[:, 0], m[:, 1], color=BLUE, linewidth=3.5, solid_capstyle="round", zorder=1)
+    svc = []
+    for x in np.linspace(-3.6, 3.6, 13):
+        y0 = -1.2 + 0.6 * (x + 4) / 8
+        L = rng.uniform(0.5, 1.1) * rng.choice([-1, 1])
+        ax.plot([x, x], [y0, y0 + L], color=BLUE, linewidth=1.2, alpha=0.8, zorder=1)
+        svc.append((x, y0 + L / 2))
+    # tickets
+    tx, ty = rng.uniform(-3.8, 3.8, 26), rng.uniform(-2.1, 2.1, 26)
+    ax.scatter(tx, ty, s=26, color=QUIET, edgecolor="white", linewidth=1, zorder=2)
+    t = np.array([1.6, 0.9])
+    pts = np.array(svc)
+    d = np.hypot(pts[:, 0] - t[0], pts[:, 1] - t[1])
+    for k in np.argsort(d)[:3]:
+        ax.plot([t[0], pts[k, 0]], [t[1], pts[k, 1]], color=ACCENT, linewidth=1, linestyle=(0, (3, 2)), zorder=2)
+    ax.scatter([t[0]], [t[1]], s=140, marker="D", color=ACCENT, edgecolor="white", linewidth=1.5, zorder=4)
+    ax.text(t[0] + 0.2, t[1] + 0.3, "new 811 ticket", fontsize=9.5, color=INK)
+    ax.plot([], [], color=BLUE, linewidth=3.5, label="Gas main")
+    ax.plot([], [], color=BLUE, linewidth=1.2, label="Service line")
+    ax.plot([], [], color=ACCENT, linewidth=1, linestyle=(0, (3, 2)), label="k nearest assets")
+    ax.scatter([], [], s=26, color=QUIET, label="Other tickets")
+    ax.set_xlim(-4.1, 6.4); ax.set_ylim(-2.4, 2.4)
+    ax.set_xticks([]); ax.set_yticks([]); ax.grid(False)
+    for sp in ax.spines.values():
+        sp.set_visible(False)
+    ax.set_title("Joining each dig to the gas assets around it (illustrative)")
+    ax.legend(loc="center right", fontsize=9.5)
+    fig.tight_layout()
+    save(fig, "fig-dp-assets.svg")
+
+
 if __name__ == "__main__":
     sfr_matching()
     sfr_index()
@@ -507,3 +575,5 @@ if __name__ == "__main__":
     ind_survival()
     ind_catchment()
     ind_terciles()
+    dp_gains()
+    dp_assets()

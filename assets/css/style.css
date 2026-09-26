@@ -159,3 +159,16 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
 .stat-card dd { margin: 4px 0 0; font: 700 28px var(--display); color: var(--ink); }
 @media (max-width: 760px) { .stat-card dl { grid-template-columns: repeat(2, 1fr); } }
 .prose .stat-card-title { color: var(--accent); }
+
+/* ---------- spec table + code-style figure ---------- */
+.spec { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 15px; }
+.spec th { text-align: left; font: 500 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 8px 12px 8px 0; border-bottom: 1px solid var(--line); }
+.spec td { padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.spec td:first-child { font-weight: 600; white-space: nowrap; }
+.codeblock { border: 1px solid var(--line); border-radius: var(--radius); background: var(--wash); padding: 18px 20px; font-family: var(--mono); }
+.prose .codeblock p { margin: 0; }
+.prose .codeblock .cb-label { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-top: 12px; }
+.prose .codeblock .cb-label:first-child { margin-top: 0; }
+.prose .codeblock .cb-line { font-size: 14px; color: var(--ink); margin-top: 4px; }
+.codeblock .cb-line span { display: inline-block; background: var(--accent-soft); color: #7a2f12; border-radius: 6px; padding: 1px 8px; margin: 2px 2px 2px 0; }
+@media (max-width: 760px) { .spec td:first-child { white-space: normal; } }
