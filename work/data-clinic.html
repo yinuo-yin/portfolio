@@ -27,7 +27,7 @@
   <header class="case-head">
     <p class="eyebrow">Case study · Data for good · Geospatial</p>
     <h1>Privacy-safe neighborhoods for Denmark</h1>
-    <p class="lead">With Two Sigma Data Clinic and Aalborg University, I helped build open-source geographic units for Denmark: regions that follow real roads and waterways, small enough to guide local policy, and large enough to protect privacy. We presented the work at SDSC 2022.</p>
+    <p class="lead">With Two Sigma Data Clinic and Aalborg University, we built open-source geographic units for Denmark: regions that follow real roads and waterways, small enough to guide local policy, and large enough to protect privacy. I led the experiments on mapping grid-level data onto the new polygons and measuring the quality of the resulting regions, and co-presented the work with Kaushik Mohan at the <a href="https://www.youtube.com/watch?v=omLL3UNmq7o&amp;t=133s">Spatial Data Science Conference 2022</a>.</p>
   </header>
 
   <figure class="figure">
@@ -37,7 +37,7 @@
 
   <dl class="meta">
     <div><dt>Partners</dt><dd>Two Sigma Data Clinic · Aalborg University (BUILD)</dd></div>
-    <div><dt>Output</dt><dd><a href="https://github.com/tsdataclinic/DenmarkRegions">Open-source code on GitHub</a></dd></div>
+    <div><dt>My role</dt><dd>Grid-to-polygon mapping experiments, region evaluation, <a href="https://www.youtube.com/watch?v=omLL3UNmq7o&amp;t=133s">conference talk</a></dd></div>
     <div><dt>Methods</dt><dd>OpenStreetMap polygonization, areal interpolation, max-p regionalization</dd></div>
   </dl>
 
@@ -79,8 +79,8 @@
       </figure>
     </div>
 
-    <h2><span class="step">3</span> Map grid counts onto the polygons</h2>
-    <p>Population and household counts live on the grid, so they have to be transferred to the new polygons. We compared two options and weighed the trade-off between accuracy and appearance.</p>
+    <h2><span class="step">3</span> Map grid counts onto the polygons <span class="mine">my focus</span></h2>
+    <p>Population and household counts live on the grid, so they have to be transferred to the new polygons. I ran the experiments comparing two approaches, weighing accuracy of the counts against how natural the boundaries look.</p>
     <div class="fig-row">
       <figure class="figure">
         <div class="frame photo"><img src="../assets/img/dc-option-interp.jpg" alt="Road-based polygons shaded by interpolated population, with smooth boundaries."></div>
@@ -92,16 +92,16 @@
       </figure>
     </div>
 
-    <h2><span class="step">4</span> Regionalize and evaluate</h2>
+    <h2><span class="step">4</span> Regionalize and evaluate <span class="mine">my focus</span></h2>
     <p>Finally, neighboring polygons are merged into regions that each meet the privacy thresholds, while staying as small and compact as possible.</p>
-    <p class="detail"><strong>Under the hood.</strong> Max-p regionalization, which maximizes the number of regions subject to a minimum of 150 individuals and 75 households per region, with spatial weights from rook contiguity. Evaluation checked that the privacy criteria held for each of the past 10 years (so the units support time-series analysis), reviewed the distribution of region compactness, and inspected the maps visually.</p>
+    <p class="detail"><strong>Under the hood.</strong> Max-p regionalization, which maximizes the number of regions subject to a minimum of 150 individuals and 75 households per region, with spatial weights from rook contiguity. Evaluation checked that the privacy criteria held for each of the past 10 years (so the units support time-series analysis), inspected the maps visually, and measured shape quality with a compactness score (4π × area ÷ perimeter², where 1 is a perfect circle) for every region across all 98 municipalities, so each mapping and clustering variant could be compared on the same footing.</p>
 
     <h2>Outcome</h2>
-    <p>The regionalization code is open source at <a href="https://github.com/tsdataclinic/DenmarkRegions">github.com/tsdataclinic/DenmarkRegions</a>, alongside a companion polygonization library. Next steps included extending the data back to 1990, checking that regions stay consistent over time, and publishing key indicators of economic prosperity at the new geographies. The longer-term vision: a standard small-area unit for Denmark, comparable to US census geographies, and an approach that could aggregate population estimates for regions in countries with limited population data. <span class="todo">TODO: confirm your role</span></p>
+    <p>The polygonization and regionalization code was released as open source, and the approach was presented at the <a href="https://www.youtube.com/watch?v=omLL3UNmq7o&amp;t=133s">Spatial Data Science Conference 2022</a>. Next steps included extending the data back to 1990, checking that regions stay consistent over time, and publishing key indicators of economic prosperity at the new geographies. The longer-term vision: a standard small-area unit for Denmark, comparable to US census geographies, and an approach that could aggregate population estimates for regions in countries with limited population data.</p>
 
     <h2>Skills</h2>
     <ul class="chips">
-      <li>Max-p regionalization</li><li>OpenStreetMap network processing</li><li>Areal interpolation</li><li>Spatial contiguity weights</li><li>Privacy-aware aggregation</li><li>Open-source collaboration</li>
+      <li>Max-p regionalization</li><li>OpenStreetMap network processing</li><li>Areal interpolation</li><li>Spatial contiguity weights</li><li>Shape compactness metrics</li><li>Privacy-aware aggregation</li><li>Open-source collaboration</li>
     </ul>
   </article>
 
