@@ -1,5 +1,5 @@
 """Generate the decorative SVGs (hero art + project thumbnails).
-The Data Clinic thumbnail is a crop of the project's own result map (assets/img/thumb-clinic.jpg).
+The Data Clinic thumbnail (assets/img/thumb-clinic.png) is the project's result map, recolored to the site palette.
 
 Everything here is illustrative: shapes and curves are synthetic, not data.
 Run from the repo root:  python3 scripts/make_art.py
