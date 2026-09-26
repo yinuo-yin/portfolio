@@ -35,7 +35,7 @@
     <div class="frame">
       <svg viewBox="0 0 760 386" role="img" aria-labelledby="sys-title sys-desc" font-family="Rubik, system-ui, sans-serif" font-size="13">
         <title id="sys-title">The single-family system, built end to end</title>
-        <desc id="sys-desc">Four data sources, including sales and leases from multiple providers for national coverage, feed a data foundation layer. It feeds four components: a growth index, a price forecast, a valuation model and capex assumptions. Together they produce yield and IRR by zip code, which a portfolio simulation uses to pick homes.</desc>
+        <desc id="sys-desc">Four data sources, including sales and leases from multiple providers for national coverage, feed a data foundation layer. It feeds four components: a growth index, a price forecast, a valuation model and capex and tax assumptions. Together they produce yield and IRR by zip code, which a portfolio simulation uses to pick homes.</desc>
         <defs>
           <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a847c"/></marker>
         </defs>
@@ -87,8 +87,8 @@
         </a>
         <a href="#s4">
           <rect x="568" y="176" width="164" height="54" rx="8" fill="#fff" stroke="#8a847c" stroke-width="1.25"/>
-          <text x="650" y="199" text-anchor="middle" font-weight="600" fill="#161616"><tspan font-family="Roboto Mono, monospace" fill="#b4491f">4</tspan>  Capex assumptions</text>
-          <text x="650" y="217" text-anchor="middle" font-size="11.5" fill="#5c5c5c">cost to own and maintain</text>
+          <text x="650" y="199" text-anchor="middle" font-weight="600" fill="#161616"><tspan font-family="Roboto Mono, monospace" fill="#b4491f">4</tspan>  Capex and tax</text>
+          <text x="650" y="217" text-anchor="middle" font-size="11.5" fill="#5c5c5c">cost of owning each home</text>
         </a>
 
         <!-- output and use -->
@@ -158,12 +158,37 @@
       <figcaption>Illustrative, synthetic data. Stripping out neighborhood and market leaves the part of value the home's own features explain.</figcaption>
     </figure>
 
-    <h2 id="s4"><span class="step">4</span> Capex assumptions</h2>
-    <p>Rent is not return: owning a home costs money every year. Capital expenditure assumptions estimate what it takes to bring each home to rentable condition and keep it there, so yields reflect what an owner would actually earn. <span class="todo">TODO: add how capex was estimated</span></p>
+    <h2 id="s4"><span class="step">4</span> Capex and tax assumptions</h2>
+    <p>Rent is not return: owning a home costs money every year. Capital expenditure and property tax assumptions turn gross rent into what an owner would actually earn, so they are estimated from data for every home rather than set as flat rates.</p>
+    <p class="detail"><strong>Under the hood.</strong> Property tax uses the observed value from assessor records whenever a home has one. Where it does not, the rate is filled in from the most granular level with enough coverage: zip code, then metro (CBSA), then state. Capex is calculated from the available data and applied to homes of the same property type in the same region.</p>
+    <figure class="figure">
+      <div class="frame">
+        <svg viewBox="0 0 760 132" role="img" aria-labelledby="tax-title tax-desc" font-family="Rubik, system-ui, sans-serif" font-size="13">
+          <title id="tax-title">Property tax fill-in order</title>
+          <desc id="tax-desc">Use the observed property tax for the home; if missing, use the zip code rate; if missing, the metro rate; if missing, the state rate.</desc>
+          <defs><marker id="tx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a847c"/></marker></defs>
+          <rect x="16" y="28" width="160" height="56" rx="8" fill="#f4e3db" stroke="#b4491f" stroke-width="2"/>
+          <g fill="#fff" stroke="#8a847c" stroke-width="1.25">
+            <rect x="208" y="28" width="160" height="56" rx="8"/><rect x="400" y="28" width="160" height="56" rx="8"/><rect x="592" y="28" width="152" height="56" rx="8"/>
+          </g>
+          <g fill="none" stroke="#8a847c" stroke-width="1.25">
+            <path d="M176 56H204" marker-end="url(#tx)"/><path d="M368 56H396" marker-end="url(#tx)"/><path d="M560 56H588" marker-end="url(#tx)"/>
+          </g>
+          <g text-anchor="middle" fill="#161616" font-weight="600">
+            <text x="96" y="54">Property</text><text x="288" y="54">Zip code</text><text x="480" y="54">Metro (CBSA)</text><text x="668" y="54">State</text>
+          </g>
+          <g text-anchor="middle" fill="#5c5c5c" font-size="11.5">
+            <text x="96" y="72">observed in assessor data</text><text x="288" y="72">rate from nearby homes</text><text x="480" y="72">if zip coverage is thin</text><text x="668" y="72">last resort</text>
+          </g>
+          <text x="380" y="114" text-anchor="middle" fill="#5c5c5c" font-size="12">Each home gets the most local rate the data can support</text>
+        </svg>
+      </div>
+      <figcaption>Property tax fill-in order, from most to least granular.</figcaption>
+    </figure>
 
     <h2 id="output">Output: yield and IRR by zip code</h2>
-    <p>Growth, forecast, valuation and capex chain into the numbers investors act on: expected yield and IRR for every zip code, refreshed each quarter.</p>
-    <p class="detail"><strong>Under the hood.</strong> Rent and price estimates set the gross yield; vacancy, management, property tax, capex and insurance bring it to a net yield; the forecast adds expected appreciation. Effective property tax rates come from assessor microdata rather than a flat assumption.</p>
+    <p>Growth, forecast, valuation, capex and tax chain into the numbers investors act on: expected yield and IRR for every zip code, refreshed each quarter.</p>
+    <p class="detail"><strong>Under the hood.</strong> Rent and price estimates set the gross yield; vacancy, management, property tax, capex and insurance bring it to a net yield; the forecast adds expected appreciation.</p>
     <figure class="figure">
       <div class="frame"><img src="../assets/img/fig-sfr-returns.svg" alt="Waterfall chart: gross rent yield of 8 percent, minus vacancy and management, property tax, capex and insurance, gives a 4 percent net yield; adding forecast appreciation gives a simplified IRR of about 8.3 percent."></div>
       <figcaption>Illustrative numbers for one zip code, not actual assumptions. IRR shown as net yield plus appreciation for simplicity.</figcaption>
