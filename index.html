@@ -25,7 +25,7 @@
 </nav>
 
 <!-- 1. Hero -->
-<section class="panel hero" id="top">
+<section class="panel hero screen" id="top">
   <div class="wrap">
     <div>
       <h1>Yinuo (Nora)<br>Yin</h1>
@@ -49,12 +49,20 @@
 </section>
 
 <!-- 2. Selected work -->
-<section class="panel" id="work">
-  <div class="wrap">
-    <h2 class="section-title">Selected Work</h2>
-    <p class="section-sub">Case studies from real estate investing and utilities. Charts are illustrative and use synthetic data.</p>
+<section class="panel screen" id="work">
+  <div class="wrap work-wrap">
+    <div class="work-head">
+      <div>
+        <h2 class="section-title">Selected Work <span class="count">4 projects</span></h2>
+        <p class="section-sub">Case studies from real estate investing, utilities and data for good. Charts are illustrative and use synthetic data.</p>
+      </div>
+      <div class="rail-nav">
+        <button type="button" class="rail-btn" data-dir="-1" aria-label="Previous projects">←</button>
+        <button type="button" class="rail-btn" data-dir="1" aria-label="Next projects">→</button>
+      </div>
+    </div>
 
-    <div class="cards">
+    <div class="rail" id="rail">
       <a class="card" href="work/single-family.html">
         <div class="thumb"><img src="assets/img/thumb-sfr.svg" alt="Illustrative map of US zip codes shaded by forecast IRR"></div>
         <span class="tag">Real estate · Portfolio construction</span>
@@ -81,26 +89,22 @@
       </a>
     </div>
 
-    <p class="more-links"><span>More</span>
-      <a href="https://doi.org/10.1186/s12874-020-01183-9">Paper: Variable selection in social-environmental data (BMC Medical Research Methodology, 2020) ↗</a>
-      <a href="https://yinuoyin.cargo.site">Earlier school projects ↗</a>
-    </p>
-
-    <div class="also">
-      <h3>Also built</h3>
-      <ul>
-        <li><b>Twin-market finder.</b> Dynamic time warping clustering to match markets on the shape of their history.</li>
-        <li><b>Shared geospatial utilities.</b> Drive-time aggregation, spillover features and Kalman smoothing reused across teams.</li>
-        <li><b>REIT signal testing.</b> A config-driven framework testing property signals against public-REIT same-store NOI growth.</li>
-        <li><b>LLM research harness.</b> Tooling that automated experiment workflows for the modeling team.</li>
-      </ul>
+    <div class="work-foot">
+      <p class="more-links small"><span>More</span>
+        <a href="https://doi.org/10.1186/s12874-020-01183-9">Paper · BMC Medical Research Methodology (2020) ↗</a>
+        <a href="https://www.youtube.com/watch?v=omLL3UNmq7o&amp;t=133s">Talk · Spatial Data Science Conference (2022) ↗</a>
+        <a href="https://yinuoyin.cargo.site">Earlier school projects ↗</a>
+      </p>
+      <p class="also-line"><span>Also built</span>
+        Twin-market finder (dynamic time warping) · Shared geospatial and Kalman-smoothing utilities · REIT same-store NOI signal testing · LLM research harness
+      </p>
     </div>
   </div>
   <a class="scroll-cue" href="#experience" aria-label="Scroll to experience">Scroll<span class="arrow">↓</span></a>
 </section>
 
 <!-- 3. Experience -->
-<section class="panel" id="experience">
+<section class="panel screen" id="experience">
   <div class="wrap">
     <h2 class="section-title">Experience</h2>
     <p class="section-sub">Eight years building forecasting and geospatial models, most recently for real estate investing.</p>
@@ -136,14 +140,20 @@
     </ul>
     <p class="more-links"><a href="resume.html">Full resume ↗</a></p>
   </div>
+  <p class="screen-foot">© 2026 Yinuo Yin</p>
 </section>
 
-<footer>
-  <div class="wrap">
-    <span>© 2026 Yinuo Yin</span>
-  </div>
-</footer>
-
+<script>
+  // left/right buttons for the project row
+  document.querySelectorAll(".rail-btn").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var rail = document.getElementById("rail");
+      var card = rail.querySelector(".card");
+      var step = card ? card.getBoundingClientRect().width + 24 : 300;
+      rail.scrollBy({ left: step * Number(b.dataset.dir), behavior: "smooth" });
+    });
+  });
+</script>
 <script src="assets/js/hero.js" defer></script>
 </body>
 </html>
