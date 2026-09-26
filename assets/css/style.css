@@ -260,7 +260,7 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
 .rail .card .thumb { aspect-ratio: auto; height: clamp(120px, 26vh, 220px); }
 .rail .card .thumb img { width: 100%; height: 100%; object-fit: cover; }
 .rail .card h3 { font-size: 16px; margin: 10px 0 2px; }
-.rail .card p { font-size: 14px; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.rail .card p { font-size: 14px; line-height: 1.45; }
 .rail .card .tag { font-size: 11px; display: block; margin-top: 10px; }
 .work-foot { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 12px; }
 .more-links.small { margin: 0 0 6px; font-size: 13px; }
