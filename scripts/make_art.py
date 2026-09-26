@@ -1,5 +1,5 @@
 """Generate the decorative SVGs (hero art + project thumbnails).
-The Data Clinic thumbnail (assets/img/thumb-clinic.png) is the project's result map, recolored to the site palette.
+The Data Clinic thumbnail is a synthetic region split into tract-like cells (needs shapely + scipy).
 
 Everything here is illustrative: shapes and curves are synthetic, not data.
 Run from the repo root:  python3 scripts/make_art.py
@@ -224,9 +224,95 @@ def thumb_sfr_map():
     (OUT / "thumb-sfr.svg").write_text(svg(W, H, "\n".join(body), "Map of the contiguous US with every zip code shaded by forecast IRR (illustrative)"))
 
 
+def thumb_clinic():
+    """A synthetic region split along 'roads' into tract-like cells, a few of
+    which are merged into highlighted privacy-safe regions. Illustrative only."""
+    import numpy as np
+    from scipy.spatial import Voronoi
+    from shapely.geometry import Polygon, LineString
+    from shapely.ops import unary_union
+
+    W, H = 480, 300
+    rng = np.random.default_rng(12)
+    # irregular outline: a wobbly blob with a flat 'coast' on the right
+    ang = np.linspace(0, 2 * np.pi, 60, endpoint=False)
+    r = 1 + 0.10 * np.sin(3 * ang + 0.5) + 0.07 * np.sin(7 * ang) + rng.normal(0, 0.025, len(ang))
+    ox = 230 + 190 * r * np.cos(ang)
+    oy = 150 + 118 * r * np.sin(ang)
+    ox = np.minimum(ox, 405 + 12 * np.sin(oy / 9))
+    outline = Polygon(np.c_[ox, oy]).buffer(0)
+
+    # seeds: denser in an 'urban' pocket near the coast
+    urban = rng.normal([355, 140], [30, 38], (70, 2))
+    rural = np.c_[rng.uniform(40, 420, 55), rng.uniform(30, 275, 55)]
+    pts = np.r_[urban, rural]
+    pts = np.r_[pts, [[-900, -900], [1400, -900], [-900, 1200], [1400, 1200]]]
+    vor = Voronoi(pts)
+    cells = []
+    for i in range(len(pts) - 4):
+        reg = vor.regions[vor.point_region[i]]
+        if -1 in reg or not reg:
+            continue
+        c = Polygon(vor.vertices[reg]).intersection(outline)
+        if not c.is_empty and c.area > 30:
+            cells.append(c)
+
+    # tract boundaries follow roads: split every cell along the road lines
+    from shapely.ops import split
+    roads = [LineString([(20, 190), (160, 150), (300, 160), (470, 110)]),
+             LineString([(210, 10), (230, 140), (250, 300)]),
+             LineString([(300, 160), (330, 300)])]
+    split_cells = []
+    for c in cells:
+        pieces = [c]
+        for rd in roads:
+            nxt = []
+            for pc in pieces:
+                try:
+                    nxt.extend([g for g in split(pc, rd).geoms if g.area > 8])
+                except Exception:
+                    nxt.append(pc)
+            pieces = nxt
+        split_cells.extend(pieces)
+    cells = split_cells
+
+    def poly_pts(g):
+        geoms = [g] if g.geom_type == "Polygon" else list(g.geoms)
+        return [" ".join(f"{x:.1f},{y:.1f}" for x, y in gg.exterior.coords) for gg in geoms if gg.geom_type == "Polygon"]
+
+    # a few merged 'regions' highlighted (neighbouring cells unioned)
+    order = sorted(range(len(cells)), key=lambda i: cells[i].centroid.x)
+    highlight = {}
+    picks = [(order[int(len(order) * 0.82)], ACCENT), (order[int(len(order) * 0.35)], SLATE_B),
+             (order[int(len(order) * 0.93)], SLATE_B), (order[int(len(order) * 0.6)], ACCENT)]
+    for seed, color in picks:
+        group = [j for j in range(len(cells)) if cells[j].distance(cells[seed]) < 0.5][:4]
+        for j in group:
+            highlight.setdefault(j, color)
+
+    fills = [ACCENT_SOFT, "#ffffff", "#d6e3ee", "#ffffff", ACCENT_SOFT]
+    parts = []
+    for i, c in enumerate(cells):
+        fill = highlight.get(i, fills[i % len(fills)])
+        for pp in poly_pts(c):
+            parts.append(f'<polygon points="{pp}" fill="{fill}" stroke="#8a847c" stroke-width="0.9" stroke-linejoin="round"/>')
+    # 'roads' drawn on top
+    for rd in roads:
+        seg = rd.intersection(outline.buffer(-1))
+        for g in ([seg] if seg.geom_type == "LineString" else list(getattr(seg, "geoms", []))):
+            if g.is_empty:
+                continue
+            path = " ".join(f"{x:.1f},{y:.1f}" for x, y in g.coords)
+            parts.append(f'<polyline points="{path}" fill="none" stroke="{INK}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>')
+    for pp in poly_pts(outline):
+        parts.append(f'<polygon points="{pp}" fill="none" stroke="{INK}" stroke-width="1.6" stroke-linejoin="round"/>')
+    (OUT / "thumb-clinic.svg").write_text(svg(W, H, "\n".join(parts), "Illustrative region split along roads into tract-like cells, with a few merged regions highlighted"))
+
+
 if __name__ == "__main__":
     hero()
     thumb_sfr_map()
     thumb_industrial()
     thumb_urbint()
+    thumb_clinic()
     print("wrote", sorted(p.name for p in OUT.glob("*.svg")))

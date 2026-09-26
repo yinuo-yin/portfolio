@@ -32,7 +32,7 @@
 
   <figure class="figure">
     <div class="frame photo"><img src="../assets/img/dc-regions.jpg" alt="Map of one Danish area divided into irregular, colorful regions that follow roads, each meeting minimum population and household thresholds."></div>
-    <figcaption>The result: privacy-safe regions for one study area, each with at least 150 people and 75 households. Basemap © Carto © OpenStreetMap contributors.</figcaption>
+    <figcaption>The result: privacy-safe regions for one study area, each with at least 100 people and 50 households. The same method was applied to all 98 municipalities. Basemap © Carto © OpenStreetMap contributors.</figcaption>
   </figure>
 
   <dl class="meta">
@@ -43,7 +43,7 @@
 
   <article class="prose">
     <h2>The problem</h2>
-    <p>The goal was data-informed action toward more equitable economic opportunity across Denmark. Municipalities, the usual unit of analysis, are too large and uneven to support tailored local action. Detailed administrative data does exist, with population and household counts on a 100 m grid, but access is limited and single grid cells break privacy rules. Every published unit had to represent at least 150 people and 75 households.</p>
+    <p>The goal was data-informed action toward more equitable economic opportunity across Denmark. Municipalities, the usual unit of analysis, are too large and uneven to support tailored local action. Detailed administrative data does exist, with population and household counts on a 100 m grid, but access is limited and single grid cells break privacy rules. Every published unit had to represent at least 100 people and 50 households, in every year across more than 30 years of data.</p>
     <div class="fig-row">
       <figure class="figure">
         <div class="frame photo"><img src="../assets/img/dc-municipalities.jpg" alt="Map of municipality borders in part of Denmark, large and uneven in size."></div>
@@ -80,7 +80,7 @@
     </div>
 
     <h2><span class="step">3</span> Map grid counts onto the polygons <span class="mine">my focus</span></h2>
-    <p>Population and household counts live on the grid, so they have to be transferred to the new polygons. I ran the experiments comparing two approaches, weighing accuracy of the counts against how natural the boundaries look.</p>
+    <p>Population and household counts live on the grid, so they have to be transferred to the new polygons. I ran the experiments comparing two approaches, weighing accuracy of the counts against how natural the boundaries look. We chose the grid overlay: each grid cell is assigned to the polygon it overlaps most, so counts are never interpolated and every final region is guaranteed to meet the privacy thresholds.</p>
     <div class="fig-row">
       <figure class="figure">
         <div class="frame photo"><img src="../assets/img/dc-option-interp.jpg" alt="Road-based polygons shaded by interpolated population, with smooth boundaries."></div>
@@ -88,13 +88,13 @@
       </figure>
       <figure class="figure">
         <div class="frame photo"><img src="../assets/img/dc-option-overlay.jpg" alt="Polygons snapped to the grid and shaded by population, with stepped boundaries."></div>
-        <figcaption><strong>Grid overlay, no interpolation.</strong> Keeps exact population and household counts, but boundaries look less natural.</figcaption>
+        <figcaption><strong>Grid overlay, no interpolation (chosen).</strong> Keeps exact population and household counts, but boundaries look less natural.</figcaption>
       </figure>
     </div>
 
     <h2><span class="step">4</span> Regionalize and evaluate <span class="mine">my focus</span></h2>
     <p>Finally, neighboring polygons are merged into regions that each meet the privacy thresholds, while staying as small and compact as possible.</p>
-    <p class="detail"><strong>Under the hood.</strong> Max-p regionalization, which maximizes the number of regions subject to a minimum of 150 individuals and 75 households per region, with spatial weights from rook contiguity. Evaluation checked that the privacy criteria held for each of the past 10 years (so the units support time-series analysis), inspected the maps visually, and measured shape quality with a compactness score (4π × area ÷ perimeter², where 1 is a perfect circle) for every region across all 98 municipalities, so each mapping and clustering variant could be compared on the same footing.</p>
+    <p class="detail"><strong>Under the hood.</strong> Max-p regionalization, which maximizes the number of regions subject to a minimum of 100 individuals and 50 households per region, applied to each region's lowest count over the full 30+ years of data, with spatial weights from rook contiguity. Evaluation checked that the privacy criteria held in every year (so the units support time-series analysis), inspected the maps visually, and measured shape quality with a compactness score (4π × area ÷ perimeter², where 1 is a perfect circle) for every region across all 98 municipalities, so each mapping and clustering variant could be compared on the same footing.</p>
 
     <h2>Outcome</h2>
     <p>The polygonization and regionalization code was released as open source, and the approach was presented at the <a href="https://www.youtube.com/watch?v=omLL3UNmq7o&amp;t=133s">Spatial Data Science Conference 2022</a>. Next steps included extending the data back to 1990, checking that regions stay consistent over time, and publishing key indicators of economic prosperity at the new geographies. The longer-term vision: a standard small-area unit for Denmark, comparable to US census geographies, and an approach that could aggregate population estimates for regions in countries with limited population data.</p>
