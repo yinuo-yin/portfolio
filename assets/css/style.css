@@ -239,6 +239,10 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
   .job ul, .resume ul.plain { margin-top: 2pt; padding-left: 11pt; }
   .job li, .resume ul.plain li, .skills dd, .skills dt { font-size: 8.3pt; line-height: 1.28; margin-bottom: 0.6pt; }
   .skills div { grid-template-columns: 105pt 1fr; gap: 6pt; padding: 0.5pt 0; }
+  /* the printed page is narrower than the phone breakpoint: keep desktop layout */
+  .job-top, .job-role { flex-direction: row !important; gap: 12pt !important; }
+  .skills div { grid-template-columns: 105pt 1fr !important; gap: 6pt !important; }
+  .resume-head, .resume section { margin-left: 0; margin-right: 0; }
   a { color: inherit; text-decoration: none; }
   @page { size: letter; margin: 0.4in 0.45in; }
 }
