@@ -30,6 +30,7 @@ PAGES = {
 }
 PROJECT_SLUGS = set(v for v in PAGES.values() if v) | {"Info"}
 # tag/category pages on Cargo were auto-generated filters; send them home
+CUR_FILES = ""
 HOME_ALIASES = {"", "Overview", "Dimensionality", "Illustration", "Cartography", "Hedonic-Home-Price-Prediction-Boston-MA"}
 
 FONT_LINK = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
@@ -44,6 +45,7 @@ def clean(s, slug, depth):
     up = "../" * depth
     # remove scripts, noscripts, editor/toolset, loading spinner, iframes injected by Cargo editor
     s = re.sub(r'<script\b[^>]*>.*?</script>', '', s, flags=re.S)
+    s = re.sub(r'<iframe id="following-frame".*?</iframe>', '', s, flags=re.S)  # hidden Cargo 'follow' widget
     s = re.sub(r'<noscript\b[^>]*>.*?</noscript>', '', s, flags=re.S)
     s = re.sub(r'<div id="toolset".*?</div>\s*</div>', '', s, count=1, flags=re.S)
     s = re.sub(r'<div class="loading"[^>]*>.*?</svg>\s*</div>\s*</div>\s*</div>', '', s, count=1, flags=re.S)
@@ -78,13 +80,16 @@ def clean(s, slug, depth):
             return tag
         name = mm.group(1)
         extra = SRC / "extra" / name
+        if not extra.exists():  # sometimes the file was saved even though the tag was still lazy
+            found = sorted((SRC / CUR_FILES).glob(name))
+            extra = found[0] if found else extra
         if extra.exists():
             dest = OUT / "img" / (slug or "home"); dest.mkdir(parents=True, exist_ok=True)
             shutil.copy2(extra, dest / name)
             new_src = f"{up}img/{slug or 'home'}/{name}"
         else:  # not downloaded yet: keep pointing at Cargo's image server
             print("  missing local copy, using Cargo URL:", name)
-            new_src = "https:" + mm.group(0).split('"')[1].replace("/w/1000/", "/t/original/")
+            new_src = "https:" + re.sub(r"/w/\d+/", "/t/original/", mm.group(0).split('"')[1])
         tag = re.sub(r'\ssrc="[^"]*"', '', tag)
         tag = re.sub(r'data-lazy(?:-src)?="[^"]*"', f'src="{new_src}"', tag, count=1)
         tag = re.sub(r'\sdata-lazy(?:-src)?="[^"]*"', '', tag)
@@ -131,6 +136,8 @@ def main():
         src = SRC / fname
         s = src.read_text(encoding="utf-8")
         depth = 1 if slug else 0
+        global CUR_FILES
+        CUR_FILES = src.stem + "_files"
         s = copy_images(s, src, slug, depth)
         s = clean(s, slug, depth)
         out = OUT / slug / "index.html" if slug else OUT / "index.html"
