@@ -225,8 +225,8 @@ def thumb_sfr_map():
 
 
 def thumb_clinic():
-    """A synthetic region split along 'roads' into tract-like cells, a few of
-    which are merged into highlighted privacy-safe regions. Illustrative only."""
+    """A synthetic region split into tract-like cells (cell edges follow a few
+    hidden 'roads'), with some cells merged into highlighted regions. Illustrative only."""
     import numpy as np
     from scipy.spatial import Voronoi
     from shapely.geometry import Polygon, LineString
@@ -296,14 +296,6 @@ def thumb_clinic():
         fill = highlight.get(i, fills[i % len(fills)])
         for pp in poly_pts(c):
             parts.append(f'<polygon points="{pp}" fill="{fill}" stroke="#8a847c" stroke-width="0.9" stroke-linejoin="round"/>')
-    # 'roads' drawn on top
-    for rd in roads:
-        seg = rd.intersection(outline.buffer(-1))
-        for g in ([seg] if seg.geom_type == "LineString" else list(getattr(seg, "geoms", []))):
-            if g.is_empty:
-                continue
-            path = " ".join(f"{x:.1f},{y:.1f}" for x, y in g.coords)
-            parts.append(f'<polyline points="{path}" fill="none" stroke="{INK}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>')
     for pp in poly_pts(outline):
         parts.append(f'<polygon points="{pp}" fill="none" stroke="{INK}" stroke-width="1.6" stroke-linejoin="round"/>')
     (OUT / "thumb-clinic.svg").write_text(svg(W, H, "\n".join(parts), "Illustrative region split along roads into tract-like cells, with a few merged regions highlighted"))
