@@ -172,3 +172,14 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
 .prose .codeblock .cb-line { font-size: 14px; color: var(--ink); margin-top: 4px; }
 .codeblock .cb-line span { display: inline-block; background: var(--accent-soft); color: #7a2f12; border-radius: 6px; padding: 1px 8px; margin: 2px 2px 2px 0; }
 @media (max-width: 760px) { .spec td:first-child { white-space: normal; } }
+
+/* ---------- photo figures and figure rows ---------- */
+.frame.photo { padding: 0; overflow: hidden; }
+.frame.photo img { width: 100%; }
+.frame.photo.narrow { max-width: 560px; }
+.fig-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 24px 0; }
+.fig-row.three { grid-template-columns: repeat(3, 1fr); }
+.fig-row .figure { margin: 0; }
+.fig-row figcaption { font-size: 12px; line-height: 1.5; }
+@media (max-width: 760px) { .fig-row, .fig-row.three { grid-template-columns: 1fr; } }
+.fig-row .frame.photo img { aspect-ratio: 3 / 2; object-fit: cover; }

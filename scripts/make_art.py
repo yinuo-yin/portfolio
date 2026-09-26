@@ -1,4 +1,5 @@
 """Generate the decorative SVGs (hero art + project thumbnails).
+The Data Clinic thumbnail is a crop of the project's own result map (assets/img/thumb-clinic.jpg).
 
 Everything here is illustrative: shapes and curves are synthetic, not data.
 Run from the repo root:  python3 scripts/make_art.py
@@ -133,38 +134,40 @@ def thumb_industrial():
 
 
 def thumb_urbint():
-    # hexagon risk surface
-    w, h = 480, 300
-    hot = [(150, 110), (340, 190)]
-
-    def fill(x, y):
-        d = min(math.hypot(x - a, y - b) for a, b in hot)
-        if d < 30:
-            return ACCENT, "#fff"
-        if d < 75:
-            return "#e2a88f", "#fff"
-        if d < 120:
-            return ACCENT_SOFT, "#fff"
-        return "#ffffff", LINE
-
-    (OUT / "thumb-urbint.svg").write_text(svg(w, h, hex_field(w, h, 18, fill), "Hexagon grid shaded by risk"))
-
-
-def thumb_clinic():
-    # irregular polygons split by 'roads'
-    w, h = 480, 300
-    parts = []
-    polys = [
-        ("40,40 200,30 230,140 60,160", ACCENT_SOFT),
-        ("200,30 440,50 420,120 230,140", "#ffffff"),
-        ("60,160 230,140 250,270 50,260", "#ffffff"),
-        ("230,140 420,120 440,270 250,270", ACCENT_SOFT),
-        ("300,160 380,150 390,230 310,240", ACCENT),
+    """A stylized daily queue of 811 tickets ranked by damage risk (made-up rows)."""
+    W, H = 480, 300
+    mono = 'font-family="Roboto Mono, monospace"'
+    sans = 'font-family="Rubik, system-ui, sans-serif"'
+    rows = [
+        ("#4417", "Water service repl", 0.94),
+        ("#4390", "Road work, trench", 0.88),
+        ("#4452", "Pole replacement", 0.71),
+        ("#4408", "Landscaping", 0.46),
+        ("#4461", "Fence install", 0.31),
+        ("#4433", "Hydro-vac locate", 0.14),
+        ("#4447", "Sign post", 0.09),
     ]
-    for pts, fill in polys:
-        parts.append(f'<polygon points="{pts}" fill="{fill}" stroke="{INK}" stroke-width="2" stroke-linejoin="round"/>')
-    parts.append(f'<path d="M20 150 C 140 140, 300 135, 460 115" fill="none" stroke="{SLATE}" stroke-width="5"/>')
-    (OUT / "thumb-clinic.svg").write_text(svg(w, h, "\n".join(parts), "Regions split along roads"))
+    x0, top, rh = 36, 62, 30
+    parts = [
+        f'<text x="{x0}" y="36" {mono} font-size="11" font-weight="600" letter-spacing="1" fill="{ACCENT}">TODAY\'S TICKETS · RANKED BY RISK</text>',
+        f'<line x1="{x0}" y1="{top - 10}" x2="{W - 36}" y2="{top - 10}" stroke="{LINE}"/>',
+    ]
+    for i, (tid, work, r) in enumerate(rows):
+        y = top + i * rh
+        hot = i < 3
+        if hot:
+            parts.append(f'<rect x="{x0 - 8}" y="{y - 2}" width="{W - 56}" height="{rh - 4}" rx="6" fill="#ffffff"/>')
+        parts.append(f'<text x="{x0}" y="{y + 16}" {mono} font-size="11" fill="#5c5c5c">{i + 1:>2}</text>')
+        parts.append(f'<text x="{x0 + 24}" y="{y + 16}" {mono} font-size="11" fill="#5c5c5c">{tid}</text>')
+        parts.append(f'<text x="{x0 + 80}" y="{y + 16}" {sans} font-size="12.5" fill="{INK}">{work}</text>')
+        bx, bw = 250, 120
+        parts.append(f'<rect x="{bx}" y="{y + 7}" width="{bw}" height="10" rx="5" fill="#ebe7e1"/>')
+        parts.append(f'<rect x="{bx}" y="{y + 7}" width="{bw * r:.1f}" height="10" rx="5" fill="{ACCENT if hot else "#c9c4bd"}"/>')
+        if hot:
+            parts.append(f'<rect x="{bx + bw + 14}" y="{y + 3}" width="54" height="18" rx="9" fill="{ACCENT}"/>')
+            parts.append(f'<text x="{bx + bw + 41}" y="{y + 16}" text-anchor="middle" {mono} font-size="10" font-weight="600" fill="#ffffff">INSPECT</text>')
+    parts.append(f'<text x="{x0}" y="{top + len(rows) * rh + 14}" {mono} font-size="10" fill="#5c5c5c">illustrative · made-up tickets</text>')
+    (OUT / "thumb-urbint.svg").write_text(svg(W, H, "\n".join(parts), "A daily list of excavation tickets ranked by damage risk, with the top three marked for inspection"))
 
 
 def thumb_sfr_map():
@@ -226,5 +229,4 @@ if __name__ == "__main__":
     thumb_sfr_map()
     thumb_industrial()
     thumb_urbint()
-    thumb_clinic()
     print("wrote", sorted(p.name for p in OUT.glob("*.svg")))

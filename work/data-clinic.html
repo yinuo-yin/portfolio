@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Privacy-Safe Regions for Denmark · Nora Yin</title>
-  <meta name="description" content="Case study: open-source small-area geographic units for Denmark, built from road networks with privacy thresholds.">
+  <meta name="description" content="Case study: open-source small-area geographic units for Denmark, built from road networks and regionalized to meet privacy thresholds.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -25,43 +25,83 @@
 
 <main class="wrap">
   <header class="case-head">
-    <p class="eyebrow">Case study · Data for good</p>
+    <p class="eyebrow">Case study · Data for good · Geospatial</p>
     <h1>Privacy-safe neighborhoods for Denmark</h1>
-    <p class="lead">With Two Sigma Data Clinic and Aalborg University, I helped build open-source geographic units for Denmark: regions that follow real roads and waterways while meeting strict privacy thresholds. We presented the work at SDSC 2022.</p>
-    <dl class="meta">
-      <div><dt>Partners</dt><dd>Two Sigma Data Clinic · Aalborg University (BUILD)</dd></div>
-      <div><dt>Output</dt><dd><a href="https://github.com/tsdataclinic/DenmarkRegions">Open-source code on GitHub</a></dd></div>
-      <div><dt>Methods</dt><dd>OpenStreetMap polygonization, max-p regionalization</dd></div>
-    </dl>
+    <p class="lead">With Two Sigma Data Clinic and Aalborg University, I helped build open-source geographic units for Denmark: regions that follow real roads and waterways, small enough to guide local policy, and large enough to protect privacy. We presented the work at SDSC 2022.</p>
   </header>
+
+  <figure class="figure">
+    <div class="frame photo"><img src="../assets/img/dc-regions.jpg" alt="Map of one Danish area divided into irregular, colorful regions that follow roads, each meeting minimum population and household thresholds."></div>
+    <figcaption>The result: privacy-safe regions for one study area, each with at least 150 people and 75 households. Basemap © Carto © OpenStreetMap contributors.</figcaption>
+  </figure>
+
+  <dl class="meta">
+    <div><dt>Partners</dt><dd>Two Sigma Data Clinic · Aalborg University (BUILD)</dd></div>
+    <div><dt>Output</dt><dd><a href="https://github.com/tsdataclinic/DenmarkRegions">Open-source code on GitHub</a></dd></div>
+    <div><dt>Methods</dt><dd>OpenStreetMap polygonization, areal interpolation, max-p regionalization</dd></div>
+  </dl>
 
   <article class="prose">
     <h2>The problem</h2>
-    <p>Danish municipalities are too large and uneven to guide local action. Detailed administrative data exists on a 100 m grid, but individual grid cells break privacy rules: every published unit must contain at least 150 people and 75 households.</p>
-    <p>Clustering grid cells directly did not work. Empty cells were assigned at random, and suburban and rural regions came out oddly shaped and hard to use for analysis.</p>
+    <p>The goal was data-informed action toward more equitable economic opportunity across Denmark. Municipalities, the usual unit of analysis, are too large and uneven to support tailored local action. Detailed administrative data does exist, with population and household counts on a 100 m grid, but access is limited and single grid cells break privacy rules. Every published unit had to represent at least 150 people and 75 households.</p>
+    <div class="fig-row">
+      <figure class="figure">
+        <div class="frame photo"><img src="../assets/img/dc-municipalities.jpg" alt="Map of municipality borders in part of Denmark, large and uneven in size."></div>
+        <figcaption>Municipalities: too coarse to act on.</figcaption>
+      </figure>
+      <figure class="figure">
+        <div class="frame photo"><img src="../assets/img/dc-grid.jpg" alt="Close-up of a 100 metre grid laid over a street map."></div>
+        <figcaption>100 m grid cells: detailed, but not privacy-safe.</figcaption>
+      </figure>
+    </div>
 
+    <h2><span class="step">1</span> Why simple clustering fails</h2>
+    <p>The obvious approach, clustering grid cells until each cluster meets the thresholds, does not work. Empty grid cells get assigned to clusters at random, and in suburban and rural areas the clusters come out long, thin and oddly shaped. Regions like these are hard to explain and not useful for research or policy.</p>
     <figure class="figure">
-      <div class="placeholder">Figure planned · Before / after: municipality and grid cells vs. road-based privacy-safe regions</div>
+      <div class="frame photo narrow"><img src="../assets/img/dc-naive-clusters.jpg" alt="Map of clusters formed directly from grid cells, with jagged, sprawling, interlocking shapes."></div>
+      <figcaption>Clustering grid cells directly: jagged, low-compactness regions.</figcaption>
     </figure>
 
-    <h2>Approach</h2>
-    <ol>
-      <li><strong>Polygons from the built environment.</strong> Each municipality is split step by step along the OpenStreetMap road network: motorways and primary roads first, then waterways, secondary and tertiary roads, then residential streets.</li>
-      <li><strong>Map the grid onto the polygons.</strong> We compared a spatial join with interpolation (smooth boundaries, but assumes population is spread evenly within a cell) against a grid overlay (exact counts, less natural edges).</li>
-      <li><strong>Regionalize.</strong> Max-p regionalization with rook contiguity merges polygons until each region meets the 150-person and 75-household threshold.</li>
-      <li><strong>Evaluate.</strong> Checked that the privacy rule held across the past ten years so the units support time-series work, reviewed the distribution of region compactness, and inspected maps visually.</li>
-    </ol>
+    <h2><span class="step">2</span> Build base polygons from the built environment</h2>
+    <p>Instead, we started from how places are actually divided. Each municipality is split step by step along the OpenStreetMap road network and waterways, from the largest roads down to residential streets, giving a hierarchy of polygons that people would recognize as blocks and neighborhoods.</p>
+    <div class="fig-row three">
+      <figure class="figure">
+        <div class="frame photo"><img src="../assets/img/dc-split-1.jpg" alt="Municipality split by motorways and primary roads into a few large polygons."></div>
+        <figcaption>Motorways, trunk and primary roads</figcaption>
+      </figure>
+      <figure class="figure">
+        <div class="frame photo"><img src="../assets/img/dc-split-2.jpg" alt="The same area further split by waterways, secondary and tertiary roads."></div>
+        <figcaption>+ waterways, secondary and tertiary roads</figcaption>
+      </figure>
+      <figure class="figure">
+        <div class="frame photo"><img src="../assets/img/dc-split-3.jpg" alt="The same area split into many small polygons by residential streets."></div>
+        <figcaption>+ residential and other streets</figcaption>
+      </figure>
+    </div>
 
-    <figure class="figure">
-      <div class="placeholder">Figure planned · Road-based subdivision in three steps (illustrative)</div>
-    </figure>
+    <h2><span class="step">3</span> Map grid counts onto the polygons</h2>
+    <p>Population and household counts live on the grid, so they have to be transferred to the new polygons. We compared two options and weighed the trade-off between accuracy and appearance.</p>
+    <div class="fig-row">
+      <figure class="figure">
+        <div class="frame photo"><img src="../assets/img/dc-option-interp.jpg" alt="Road-based polygons shaded by interpolated population, with smooth boundaries."></div>
+        <figcaption><strong>Spatial join + interpolation.</strong> Keeps smooth, natural boundaries, but assumes people are spread evenly within each grid cell.</figcaption>
+      </figure>
+      <figure class="figure">
+        <div class="frame photo"><img src="../assets/img/dc-option-overlay.jpg" alt="Polygons snapped to the grid and shaded by population, with stepped boundaries."></div>
+        <figcaption><strong>Grid overlay, no interpolation.</strong> Keeps exact population and household counts, but boundaries look less natural.</figcaption>
+      </figure>
+    </div>
+
+    <h2><span class="step">4</span> Regionalize and evaluate</h2>
+    <p>Finally, neighboring polygons are merged into regions that each meet the privacy thresholds, while staying as small and compact as possible.</p>
+    <p class="detail"><strong>Under the hood.</strong> Max-p regionalization, which maximizes the number of regions subject to a minimum of 150 individuals and 75 households per region, with spatial weights from rook contiguity. Evaluation checked that the privacy criteria held for each of the past 10 years (so the units support time-series analysis), reviewed the distribution of region compactness, and inspected the maps visually.</p>
 
     <h2>Outcome</h2>
-    <p>The regionalization code is open source at <a href="https://github.com/tsdataclinic/DenmarkRegions">github.com/tsdataclinic/DenmarkRegions</a>. The longer-term aim was a standard small-area unit for Denmark, comparable to US census geographies. <span class="todo">TODO: confirm your role; add a public talk link if one exists</span></p>
+    <p>The regionalization code is open source at <a href="https://github.com/tsdataclinic/DenmarkRegions">github.com/tsdataclinic/DenmarkRegions</a>, alongside a companion polygonization library. Next steps included extending the data back to 1990, checking that regions stay consistent over time, and publishing key indicators of economic prosperity at the new geographies. The longer-term vision: a standard small-area unit for Denmark, comparable to US census geographies, and an approach that could aggregate population estimates for regions in countries with limited population data. <span class="todo">TODO: confirm your role</span></p>
 
     <h2>Skills</h2>
     <ul class="chips">
-      <li>Spatial clustering</li><li>Regionalization</li><li>OpenStreetMap</li><li>Privacy-aware aggregation</li><li>Open source</li>
+      <li>Max-p regionalization</li><li>OpenStreetMap network processing</li><li>Areal interpolation</li><li>Spatial contiguity weights</li><li>Privacy-aware aggregation</li><li>Open-source collaboration</li>
     </ul>
   </article>
 
