@@ -28,7 +28,7 @@ PAGES = {
     "Condo Price Per Square Foot Near Rittenhouse Square - Yinuo Yin.html": "Condo-Price-Per-Square-Foot-Near-Rittenhouse-Square",
     "Urban Growth Boundary (UGB) - Yinuo Yin.html": "Urban-Growth-Boundary-UGB",
 }
-PROJECT_SLUGS = set(v for v in PAGES.values() if v) | {"Info"}
+PROJECT_SLUGS = set(v for v in PAGES.values() if v)
 # tag/category pages on Cargo were auto-generated filters; send them home
 CUR_FILES = ""
 HOME_ALIASES = {"", "Overview", "Dimensionality", "Illustration", "Cartography", "Hedonic-Home-Price-Prediction-Boston-MA"}
@@ -70,6 +70,12 @@ def clean(s, slug, depth):
             return f'href="{up or "./"}"'
         return f'href="{up}{path}/"'
     s = re.sub(r'href="((?:https://yinuoyin\.cargo\.site/|https://yinuoyin\.com/)[^"]*)"', fix_link, s)
+    # the Info page is not part of the archive: drop the INFO link from the header
+    s = re.sub(r'<h1><a href="https://yinuoyin\.cargo\.site/Info" rel="history">INFO</a></h1>', '', s)
+    s = re.sub(r'<h1><a href="[./]*" rel="history">INFO</a></h1>', '', s)
+    # Cargo's script kept these links in the same tab; without it, target=_blank opens a
+    # new tab, so drop it from links that stay inside the archive
+    s = re.sub(r'(<a href="(?!https?:|mailto:|//)[^"]*"[^>]*?)\s+target="_blank"', r'\1', s)
     s = re.sub(r'\sdata-src="https://freight\.cargo\.site[^"]*"', '', s)
     # images that were still lazy (not loaded) when the page was saved: point them at
     # local copies placed in private/cargo/extra/ (downloaded separately)
@@ -104,7 +110,8 @@ def clean(s, slug, depth):
         sc = re.search(r'data-scale="(\d+)"', tag)
         pct = sc.group(1) if sc else "100"
         tag = re.sub(r'\sstyle="[^"]*"', '', tag)
-        return tag[:-1] + f' style="width:{pct}%;height:auto">'
+        wo = re.search(r'width_o="(\d+)"', tag).group(1)
+        return tag[:-1] + f' style="width:{pct}%;max-width:{wo}px;height:auto">'
     s = re.sub(r'<img[^>]*>', fix_size, s)
     # hidden image with no source on the home page
     s = re.sub(r'<img[^>]*src_o="[^"]*"[^>]*display: none[^>]*>', '', s)
@@ -144,7 +151,6 @@ def main():
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(s, encoding="utf-8")
         print("wrote", out.relative_to(OUT))
-    make_info()
 
 def make_info():
     """The Info page was not saved from the browser; rebuild it from a project page

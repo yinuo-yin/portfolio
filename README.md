@@ -12,6 +12,8 @@ work/*.html             one page per case study
 assets/css/style.css    the only stylesheet
 assets/img/             SVG art and figures
 scripts/make_art.py     regenerates the decorative SVGs (synthetic shapes, no data)
+archive/                2018 grad-school portfolio, a static copy of the old Cargo site
+scripts/build_archive.py  rebuilds archive/ from pages saved in private/cargo/
 ```
 
 Preview locally: `python3 -m http.server` in this folder, then open http://localhost:8000.
