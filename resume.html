@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resume · Yinuo (Nora) Yin</title>
+  <meta name="description" content="Resume of Yinuo (Nora) Yin, data scientist: statistical and machine learning models, alternative data, and end-to-end modeling pipelines.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="resume-page">
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html">Nora Yin</a>
+    <div class="links">
+      <a href="index.html#work">Work</a>
+      <a href="index.html#experience">Experience</a>
+      <a href="#" onclick="window.print(); return false;">Save as PDF</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap resume">
+  <header class="resume-head">
+    <h1>Yinuo (Nora) Yin</h1>
+    <p class="resume-contact">New York, NY · <a href="mailto:yynlelenora@gmail.com">yynlelenora@gmail.com</a> · <a href="https://www.linkedin.com/in/yynlelenora/">linkedin.com/in/yynlelenora</a> · <a href="https://www.yinuoyin.com">yinuoyin.com</a></p>
+  </header>
+
+  <section>
+    <h2>Work experience</h2>
+
+    <div class="job">
+      <div class="job-top"><h3>Two Sigma Investments — Real Estate</h3><span>New York, NY</span></div>
+      <div class="job-role"><span>Vice President, Data Scientist</span><span>Jan 2024 – Present</span></div>
+      <div class="job-role"><span>Data Scientist</span><span>Jun 2021 – Dec 2023</span></div>
+      <ul>
+        <li>Drove industrial sector investment decisions: beta regressions on long panel data forecasting market and market × size occupancy, blended with rent momentum into a market-level revenue ranking; and lease-level survival models forecasting time-to-lease-up across a ~525K-property national industrial universe. Earlier versions used gradient-boosted decision tree algorithms and synthetic training sets from hedonic modeling. <a class="see" href="work/industrial.html">Case study →</a></li>
+        <li>Led single-family portfolio construction: causal-inference matching (Coarsened Exact Matching) chained into a Case-Shiller-style repeat-measures growth index, an ensemble long-term price-forecasting model, and automated property-level valuation, combined into a systematic, portfolio-scale selection framework driven by zip-level yield and internal rate of return, spanning ~70M single-family transaction records, used directly in build-to-rent and homebuilder deal underwriting. <a class="see" href="work/single-family.html">Case study →</a></li>
+        <li>Designed a hypothesis-testing framework evaluating whether alternative datasets carry investment signal beyond traditional real estate fundamentals: matched maritime shipment records, consumer credit-card panel spend, and labor-cost data to individual properties and leases via custom entity-resolution and geographic-proxy joins, with the strongest signals productionized as ongoing inputs to investment decisions and investment committee memos.</li>
+        <li>Engineered advanced geospatial features, including point-of-interest and radius/drive-time-based accessibility metrics, improving forecast model performance by 10%+ across multiple industrial models.</li>
+        <li>Built a testing framework validating property- and market-level signals against same-store net operating income (NOI) growth for public real estate investment trusts (REITs) across five property sectors; became the basis of an ongoing production REIT analytics effort.</li>
+        <li>Scaled team tooling and talent: built a Dynamic-Time-Warping market-matching tool and shared geospatial utilities adopted across multiple deal evaluations, created an LLM-powered research harness that automated experiment workflows, and mentored new hires on the shared codebase and LLM-assisted development.</li>
+        <li>Communicated technical work across audiences: presented modeling results and recommendations to investment committees and cross-functional stakeholders, and supported materials for external fundraising efforts.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-top"><h3>Urbint (acquired by Itron)</h3><span>New York, NY</span></div>
+      <div class="job-role"><span>Senior Data Scientist</span><span>Apr 2021 – Jun 2021</span></div>
+      <div class="job-role"><span>Data Scientist</span><span>Dec 2018 – Apr 2021</span></div>
+      <ul>
+        <li>Led rare-event classification modeling to predict excavation damage risk, capturing 20% of incidents within the top 1% and 60% within the top 10% of highest-risk projects. <a class="see" href="work/damage-prevention.html">Case study →</a></li>
+        <li>Built and deployed time series forecasting models achieving 80%+ accuracy across service regions to optimize workforce planning.</li>
+        <li>Architected reusable ML and geospatial pipelines (H3 hexagonal spatial indexing, weather integration, k-nearest neighbor (KNN) spatial joins) to standardize model development and improve scalability.</li>
+        <li>Partnered with Product and Engineering to define KPIs and translate modeling insights into client-facing dashboards.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-top"><h3>Fox Chase Cancer Center</h3><span>Philadelphia, PA</span></div>
+      <div class="job-role"><span>Geospatial Data Analyst</span><span>Jun 2018 – Nov 2018</span></div>
+      <ul>
+        <li>Applied PCA, hierarchical clustering, LASSO, and elastic net regression to analyze social determinants of advanced prostate cancer outcomes.</li>
+        <li>Implemented Bayesian and Cox proportional hazards models on high-dimensional oncology datasets.</li>
+        <li>Improved computational efficiency of large-scale analyses using cluster computing.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Education</h2>
+    <div class="job">
+      <div class="job-top"><h3>University of Pennsylvania</h3><span>Philadelphia, PA</span></div>
+      <div class="job-role"><span>Master of Urban Spatial Analytics · GPA 3.9 · Merit-based Scholarship</span><span>Aug 2017 – May 2018</span></div>
+    </div>
+    <div class="job">
+      <div class="job-top"><h3>University of Wisconsin – Madison</h3><span>Madison, WI</span></div>
+      <div class="job-role"><span>B.S. Landscape Architecture · GPA 3.9 · University Olmsted Scholar; Graduate with Distinction</span><span>Aug 2013 – May 2017</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Publications and talks</h2>
+    <ul class="plain">
+      <li>Handorf E, <strong>Yin Y</strong>, Slifker M, Lynch S. <a href="https://doi.org/10.1186/s12874-020-01183-9">Variable selection in social-environmental data: sparse regression and tree ensemble machine learning approaches</a>. <em>BMC Medical Research Methodology</em>, 20, 302 (2020).</li>
+      <li>Mohan K, <strong>Yin Y</strong>. <a href="https://www.youtube.com/watch?v=omLL3UNmq7o&amp;t=133s">Developing fine-grained geospatial units that reflect the built and natural world</a>. Spatial Data Science Conference, 2022. <a class="see" href="work/data-clinic.html">Case study →</a></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Skills</h2>
+    <dl class="skills">
+      <div><dt>Programming</dt><dd>Python, R, SQL, JavaScript, HTML/CSS</dd></div>
+      <div><dt>Modeling &amp; analytics</dt><dd>Time series and cross-sectional forecasting, regression, classification, survival analysis, causal inference, tree-based models, neural networks, alternative-data feature engineering, geospatial feature engineering, spatial clustering, signal research and backtesting</dd></div>
+      <div><dt>Infrastructure &amp; tools</dt><dd>Git, GCP, Docker, Kubernetes, Airflow, Linux/Unix, ArcGIS, LLM-assisted research tooling</dd></div>
+    </dl>
+  </section>
+
+  <p class="resume-actions"><a class="btn" href="#" onclick="window.print(); return false;">Save as PDF</a></p>
+</main>
+
+<footer>
+  <div class="wrap"><span>© 2026 Yinuo Yin</span><a href="https://www.linkedin.com/in/yynlelenora/">LinkedIn</a></div>
+</footer>
+</body>
+</html>
