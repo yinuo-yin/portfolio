@@ -14,6 +14,7 @@ INK = "#161616"
 ACCENT = "#b4491f"
 ACCENT_SOFT = "#f4e3db"
 SLATE = "#4f6479"
+SLATE_B = "#2f6f9f"
 LINE = "#d9d5cf"
 WASH = "#f6f4f1"
 
@@ -101,19 +102,34 @@ def thumb_sfr():
 
 
 def thumb_industrial():
-    # two lease-up curves
-    w, h = 480, 300
-    x0, x1, y0, y1 = 50, 440, 250, 50
-    parts = [f'<line x1="{x0}" y1="{y0}" x2="{x1}" y2="{y0}" stroke="{LINE}" stroke-width="2"/>',
-             f'<line x1="{x0}" y1="{y0}" x2="{x0}" y2="{y1}" stroke="{LINE}" stroke-width="2"/>']
-    for k, color in [(0.22, ACCENT), (0.12, SLATE)]:
-        pts = []
-        for i in range(0, 61):
-            t = i / 60
-            p = 1 - math.exp(-k * i / 3)
-            pts.append(f"{x0 + t * (x1 - x0):.1f},{y0 - p * (y0 - y1) * 0.95:.1f}")
-        parts.append(f'<polyline points="{" ".join(pts)}" fill="none" stroke="{color}" stroke-width="4" stroke-linecap="round"/>')
-    (OUT / "thumb-industrial.svg").write_text(svg(w, h, "\n".join(parts), "Two lease-up curves"))
+    """Technical-style lease-up curves: P(leased by quarter) for two populations."""
+    W, H = 480, 300
+    x0, x1, y0, y1 = 70, 440, 240, 40            # plot box (y0 = bottom)
+    X = lambda q: x0 + (x1 - x0) * q / 12
+    Y = lambda p: y0 - (y0 - y1) * p
+    mono = 'font-family="Roboto Mono, monospace"'
+    parts = []
+    for p in (0, 0.25, 0.5, 0.75, 1.0):
+        parts.append(f'<line x1="{x0}" y1="{Y(p):.1f}" x2="{x1}" y2="{Y(p):.1f}" stroke="#e4e2de" stroke-width="1"/>')
+        parts.append(f'<text x="{x0-8}" y="{Y(p)+4:.1f}" text-anchor="end" {mono} font-size="11" fill="#5c5c5c">{int(p*100)}%</text>')
+    for q in (0, 4, 8, 12):
+        parts.append(f'<text x="{X(q):.1f}" y="{y0+18}" text-anchor="middle" {mono} font-size="11" fill="#5c5c5c">{q}</text>')
+    parts.append(f'<line x1="{x0}" y1="{y0}" x2="{x1}" y2="{y0}" stroke="#8a847c" stroke-width="1.2"/>')
+    parts.append(f'<line x1="{x0}" y1="{y0}" x2="{x0}" y2="{y1}" stroke="#8a847c" stroke-width="1.2"/>')
+    parts.append(f'<text x="{(x0+x1)/2}" y="{y0+38}" text-anchor="middle" {mono} font-size="11.5" fill="#161616">Quarters since vacant</text>')
+    parts.append(f'<text transform="translate(22 {(y0+y1)/2}) rotate(-90)" text-anchor="middle" {mono} font-size="11.5" fill="#161616">P(leased)</text>')
+    parts.append(f'<line x1="{X(8):.1f}" y1="{y1}" x2="{X(8):.1f}" y2="{y0}" stroke="{INK}" stroke-width="1" stroke-dasharray="4 4"/>')
+    for h0, d, color, lab, dy in [(0.24, 0.02, ACCENT, "New construction", -10), (0.16, 0.03, SLATE_B, "Re-lease", 22)]:
+        surv, pts = 1.0, [(X(0), Y(0))]
+        for q in range(1, 13):
+            surv *= 1 - h0 * math.exp(-d * q)
+            pts.append((X(q), Y(1 - surv)))
+        parts.append(f'<polyline points="{" ".join(f"{x:.1f},{y:.1f}" for x, y in pts)}" fill="none" stroke="{color}" stroke-width="2.5" stroke-linejoin="round"/>')
+        for x, y in pts[1:]:
+            parts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="3.4" fill="{color}" stroke="{WASH}" stroke-width="1.5"/>')
+        parts.append(f'<text x="{pts[-1][0]-4:.1f}" y="{pts[-1][1]+dy:.1f}" text-anchor="end" font-family="Rubik, system-ui, sans-serif" font-size="12" fill="#161616">{lab}</text>')
+    parts.append(f'<text x="{X(8)+5:.1f}" y="{y0-8}" {mono} font-size="10" fill="#161616">8Q</text>')
+    (OUT / "thumb-industrial.svg").write_text(svg(W, H, "\n".join(parts), "Lease-up curves: probability a vacant building is leased by quarter, new construction versus re-lease"))
 
 
 def thumb_urbint():

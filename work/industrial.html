@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Industrial Market &amp; Property Models · Nora Yin</title>
-  <meta name="description" content="Case study: market ranking, building-level lease-up survival models and alternative-data hypothesis testing for industrial real estate.">
+  <meta name="description" content="Case study: a market revenue ranking built on beta regression, and a discrete-time survival model scoring how fast every vacant industrial building leases.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -26,48 +26,76 @@
 <main class="wrap">
   <header class="case-head">
     <p class="eyebrow">Case study · Real estate investing</p>
-    <h1>Industrial: market, property and new-signal models</h1>
-    <p class="lead">I owned the models an industrial investment team used to decide where and what to buy: a top-down market ranking, a bottom-up model scoring ~525K buildings every quarter, and a research track testing whether outside data predicts performance.</p>
-    <dl class="meta">
-      <div><dt>Role</dt><dd>Model owner across all three tracks</dd></div>
-      <div><dt>Scope</dt><dd>~100 US markets · ~525K buildings · quarterly</dd></div>
-      <div><dt>Methods</dt><dd>Beta regression, survival analysis, geospatial features, signal testing</dd></div>
-    </dl>
+    <h1>Industrial: which markets, and which buildings</h1>
+    <p class="lead">I owned the models an industrial investment team used to screen markets and underwrite specific buildings: a market revenue ranking that says where to look, and a property leaseability model that says how fast a vacant building will lease. A research track tests new data sources that feed both.</p>
   </header>
 
+  <figure class="figure">
+    <div class="frame"><img src="../assets/img/fig-industrial-lanes.svg" alt="Three tracks: market revenue ranking from rent momentum and a beta-regression occupancy forecast; property leaseability from a discrete-time survival model; and a research track testing alternative data."></div>
+    <figcaption>Start with the market ranking to screen markets, then use the leaseability model to underwrite the specific building. The research track feeds new inputs back into both models.</figcaption>
+  </figure>
+
+  <dl class="meta">
+    <div><dt>Role</dt><dd>Model owner, from research to production</dd></div>
+    <div><dt>Scope</dt><dd>Top 100 US markets · national building universe · quarterly</dd></div>
+    <div><dt>Methods</dt><dd>Beta regression, discrete-time survival analysis, rank-correlation backtesting, geospatial features</dd></div>
+  </dl>
+
   <article class="prose">
+    <h2 id="market"><span class="step">1</span> Market revenue: which markets</h2>
+    <p>For an industrial owner, revenue depends on two things: how fast rents grow and how much of the space is filled. This model ranks the top 100 US industrial markets by expected revenue three years out, combining both into one number, so the team can see at a glance where to focus.</p>
+    <p class="detail"><strong>Under the hood.</strong> The target is each market's realized revenue three years later, with rent growth and occupancy combined. Two signals are blended 50/50 and ranked across markets: a rent-growth momentum signal (trailing rent growth against the national average) and a forward occupancy forecast (current occupancy level and trend, plus a forward absorption estimate built from supply and construction pipeline data).</p>
+
+    <p>The occupancy forecast is a beta regression. Occupancy can never exceed 100%, and it varies less as a market nears full occupancy; beta regression respects both, while ordinary linear regression overshoots the ceiling and has to be clipped after the fact.</p>
     <figure class="figure">
-      <div class="frame"><img src="../assets/img/fig-industrial-lanes.svg" alt="Diagram of three tracks: top-down market selection with beta-regression occupancy forecasts; bottom-up property leaseability with a discrete-time survival model; research track testing alternative data with entity resolution and a tercile test engine."></div>
-      <figcaption>The market call narrows where to look, the property model ranks buildings within it, and the research track feeds new inputs into both.</figcaption>
+      <div class="frame"><img src="../assets/img/fig-ind-beta.svg" alt="Scatter of market occupancy against a demand driver, with a straight linear fit that crosses 100 percent and a curved beta regression fit that approaches but never exceeds 100 percent."></div>
+      <figcaption>Illustrative, synthetic data. The beta fit bends toward the ceiling; the linear fit runs through it.</figcaption>
     </figure>
 
-    <h2>Market ranking (top-down)</h2>
-    <p>A beta regression on long panel data forecasts occupancy for ~100 US industrial markets. Beta regression respects occupancy's 0–1 bounds and its tightening variance near full occupancy, which ordinary least squares handles only by clipping after the fact. The forecast is blended with a deliberately uncorrelated rent-momentum signal into a market revenue ranking. A second cut splits each market by building size (shallow-bay vs. bulk), the level at which deals are actually underwritten.</p>
+    <p><strong>Validation.</strong> Every quarter, the ranking is scored by its Spearman rank correlation with realized three-year revenue, across a backtest of more than 25 years. The blended ranking beat the previous rent-only model on ranking accuracy. It also holds up better through shocks, because momentum and occupancy tend to fail at different times.</p>
     <figure class="figure">
-      <div class="placeholder">Figure planned · Beta regression vs. OLS on bounded occupancy data (illustrative)</div>
+      <div class="frame"><img src="../assets/img/fig-ind-signals.svg" alt="Line chart of rolling rank correlation for rent momentum, occupancy forecast and their blend; during a market shock, momentum collapses while occupancy holds, so the blend dips far less."></div>
+      <figcaption>Illustrative, synthetic data showing why blending two imperfect signals gives a steadier ranking.</figcaption>
     </figure>
 
-    <h2>Property leaseability (bottom-up)</h2>
-    <p>A discrete-time survival model estimates a per-quarter hazard and rolls it into a lease-up curve for each building. Survival modeling fits better than a fixed-horizon classifier because lease-up depends on market conditions that change every quarter, and many buildings are still vacant, so their outcome is censored. New construction (scored from delivery) and re-lease (re-scored each quarter) are fit separately because their drivers differ. Earlier versions used gradient-boosted trees trained on synthetic sets from hedonic modeling.</p>
+    <h2 id="leaseability"><span class="step">2</span> Property leaseability: which buildings</h2>
+    <p>Once a market looks attractive, the question becomes a specific building: if it is vacant, how quickly will it lease? The model scores every building in the national industrial universe each quarter with its probability of reaching stabilization (at least 90% leased) within eight quarters.</p>
+    <p class="detail"><strong>Under the hood.</strong> A discrete-time survival model estimates the chance a building leases in each quarter, given it is still vacant, and rolls those per-quarter hazards into a lease-up curve. Survival modeling fits the problem: lease-up depends on market conditions that change every quarter, and many buildings are still vacant, so their outcome is not yet known (censored). New construction (leasing from delivery) and re-lease (an existing building backfilling vacant space) are fit as separate models because their drivers differ. Accuracy is checked on discrimination (AUC) at several horizons. Earlier versions used gradient-boosted trees trained on synthetic sets from hedonic models.</p>
     <figure class="figure">
-      <div class="placeholder">Figure planned · Lease-up curves for new construction vs. re-lease (illustrative)</div>
+      <div class="frame"><img src="../assets/img/fig-ind-survival.svg" alt="Left: bars of the per-quarter lease hazard for new construction and re-lease. Right: the resulting cumulative lease-up curves, with an eight-quarter horizon marked."></div>
+      <figcaption>Illustrative, synthetic data. The model predicts a hazard each quarter; the curve is what investors read.</figcaption>
     </figure>
 
-    <h2>Geospatial features</h2>
-    <p>Point-of-interest access (highways, ports, airports) at census-tract level, plus 15-minute drive-time aggregates of nearby space fundamentals and lease-up events. A same-subtype variant keeps a warehouse's comparison set from being diluted by nearby flex buildings. These features were among the largest single drivers of model lift.</p>
+    <p><strong>From probability to decision.</strong> A probability on its own is hard to act on, so each building's score is also expressed as a percentile rank against three peer groups: all buildings nationally, buildings in the same market, and buildings of the same size class in the same market. Results can be cut by market, size and vintage class and tracked quarter by quarter.</p>
+    <div class="stat-card" role="group" aria-label="Example model output for a made-up building">
+      <p class="stat-card-title">Example output · made-up building</p>
+      <p class="stat-card-sub">Shallow-bay warehouse · re-lease · built 1985</p>
+      <dl>
+        <div><dt>P(lease by 8Q)</dt><dd>74%</dd></div>
+        <div><dt>National pctl</dt><dd>81st</dd></div>
+        <div><dt>Market pctl</dt><dd>77th</dd></div>
+        <div><dt>Market × size pctl</dt><dd>70th</dd></div>
+      </dl>
+    </div>
+
+    <h2 id="features">What drives both: geospatial features</h2>
+    <p>Location matters in ways a building's own attributes do not capture. I built point-of-interest access features (highways, ports, airports) at census-tract level, plus 15-minute drive-time aggregates of nearby space fundamentals and lease-up events. A same-subtype variant keeps a warehouse's comparison set from being diluted by nearby flex buildings. These were among the largest single drivers of model lift.</p>
     <figure class="figure">
-      <div class="placeholder">Figure planned · Drive-time catchment around a building (illustrative)</div>
+      <div class="frame"><img src="../assets/img/fig-ind-catchment.svg" alt="Map sketch of a warehouse with an irregular 15-minute drive-time boundary stretched along a highway; same-subtype buildings inside are counted, other subtypes and buildings outside are excluded."></div>
+      <figcaption>Illustrative. Drive time, not straight-line distance, defines the neighborhood, so it stretches along highways.</figcaption>
     </figure>
 
-    <h2>Alternative-data hypothesis testing (research)</h2>
-    <p>A framework to test whether outside data carries investment signal beyond standard fundamentals. Consumer card-panel spend, labor-cost data, maritime import shipments and freight flows were linked to individual properties through address matching and geographic-proxy joins, since none share an identifier with lease records. Every source runs through the same engine: split properties into sensitivity terciles each period, then track forward rent growth by group. The strongest signals became ongoing inputs to investment decisions.</p>
+    <h2 id="research">Research: does outside data help?</h2>
+    <p>A framework to test whether outside data carries investment signal beyond standard fundamentals. Consumer card-panel spend, labor-cost data, maritime import shipments and freight flows were linked to individual properties through address matching and geographic-proxy joins, since none share an identifier with lease records.</p>
+    <p class="detail"><strong>Under the hood.</strong> Every source runs through the same engine: each period, split properties into terciles by their exposure to the signal, then track forward rent growth by group. A signal is useful only if the groups separate consistently. The strongest signals became ongoing inputs to investment decisions.</p>
     <figure class="figure">
-      <div class="placeholder">Figure planned · Tercile test: low / mid / high exposure vs. forward rent growth (illustrative)</div>
+      <div class="frame"><img src="../assets/img/fig-ind-terciles.svg" alt="Bar chart of forward three-year rent growth by low, mid and high exposure to a signal, rising from low to high."></div>
+      <figcaption>Illustrative, synthetic data showing the test, not a result.</figcaption>
     </figure>
 
     <h2>Skills</h2>
     <ul class="chips">
-      <li>Survival analysis</li><li>Beta regression</li><li>Panel forecasting</li><li>Geospatial features</li><li>Entity resolution</li><li>Signal research</li>
+      <li>Beta regression</li><li>Discrete-time survival analysis</li><li>Censored data</li><li>Cross-sectional ranking</li><li>Spearman IC backtesting</li><li>Drive-time and POI features</li><li>Entity resolution</li><li>Signal research</li>
     </ul>
   </article>
 

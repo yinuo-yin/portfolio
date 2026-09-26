@@ -348,6 +348,151 @@ def sfr_simulation():
     save(fig, "fig-sfr-simulation.svg")
 
 
+# ---------------------------------------------------------------- industrial
+
+def ind_signals():
+    """Rolling rank correlation of two signals and their 50/50 blend (synthetic).
+    Point: the signals fail at different times, so the blend is steadier."""
+    rng = np.random.default_rng(3)
+    t = np.arange(0, 100)
+    base = 0.55 + 0.12 * np.sin(t / 9)
+    shock = np.exp(-((t - 38) ** 2) / 40)
+    momentum = base - 0.55 * shock + rng.normal(0, 0.03, len(t))
+    occupancy = 0.35 + 0.15 * np.sin(t / 13 + 2) + 0.25 * shock + rng.normal(0, 0.03, len(t))
+    blend = 0.5 * momentum + 0.5 * occupancy + 0.08
+    k = 4
+    sm = lambda x: np.convolve(x, np.ones(k) / k, mode="valid")
+    tt = t[k - 1:]
+    fig, ax = plt.subplots(figsize=(7.6, 3.2))
+    ax.plot(tt, sm(momentum), color=BLUE, label="Rent momentum")
+    ax.plot(tt, sm(occupancy), color=QUIET, linewidth=2, label="Occupancy forecast")
+    ax.plot(tt, sm(blend), color=ACCENT, linewidth=2.6, label="50/50 revenue blend")
+    ax.axhline(0, color=MUTED, linewidth=0.8)
+    ax.axvspan(31, 46, color=GRID, alpha=0.6, linewidth=0)
+    ax.text(38.5, 0.93, "market shock", ha="center", fontsize=9, color=MUTED)
+    ax.set_ylim(-0.2, 1.0)
+    ax.set_xticks([])
+    ax.set_xlabel("Backtest quarters (synthetic)")
+    ax.set_ylabel("Rank correlation vs.\nrealized 3-yr revenue")
+    ax.set_title("Two signals that fail at different times")
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.2), fontsize=9.5, ncol=3)
+    fig.tight_layout()
+    save(fig, "fig-ind-signals.svg")
+
+
+def ind_beta():
+    """Beta regression vs. OLS on occupancy bounded in [0, 1] (synthetic)."""
+    rng = np.random.default_rng(9)
+    x = rng.uniform(-3, 3, 140)
+    mu = 1 / (1 + np.exp(-(1.9 + 0.9 * x)))
+    phi = 40
+    y = rng.beta(mu * phi, (1 - mu) * phi)
+    xs = np.linspace(-3.4, 3.4, 200)
+    A = np.vstack([np.ones_like(x), x]).T
+    b0, b1 = np.linalg.lstsq(A, y, rcond=None)[0]
+    fig, ax = plt.subplots(figsize=(7.6, 3.2))
+    ax.scatter(x, y * 100, s=18, color=QUIET, edgecolor="white", linewidth=0.8, zorder=2)
+    ax.plot(xs, (b0 + b1 * xs) * 100, color=BLUE, label="Linear regression (OLS)")
+    ax.plot(xs, 100 / (1 + np.exp(-(1.9 + 0.9 * xs))), color=ACCENT, linewidth=2.6, label="Beta regression")
+    ax.axhline(100, color=INK, linewidth=1, linestyle=(0, (3, 3)))
+    ax.text(-3.35, 102, "100% occupied: a hard ceiling", fontsize=9, color=INK)
+    ax.set_ylim(40, 112)
+    ax.set_xlabel("Demand driver (standardized, synthetic)")
+    ax.set_ylabel("Market occupancy, %")
+    ax.set_title("Occupancy is bounded; the model should be too")
+    ax.legend(loc="lower right", fontsize=9.5)
+    fig.tight_layout()
+    save(fig, "fig-ind-beta.svg")
+
+
+def _leaseup(h0, decay, q):
+    h = h0 * np.exp(-decay * q)
+    surv = np.cumprod(1 - h)
+    return h, 1 - surv
+
+
+def ind_survival():
+    """Discrete-time survival: per-quarter hazard -> cumulative lease-up."""
+    q = np.arange(1, 13)
+    h_new, c_new = _leaseup(0.24, 0.02, q)
+    h_rel, c_rel = _leaseup(0.16, 0.03, q)
+    fig, (a, b) = plt.subplots(1, 2, figsize=(7.6, 3.3), gridspec_kw={"width_ratios": [1, 1.2]})
+    w = 0.38
+    a.bar(q - w / 2, h_new * 100, width=w, color=ACCENT, label="New construction")
+    a.bar(q + w / 2, h_rel * 100, width=w, color=BLUE, label="Re-lease")
+    a.set_title("Step 1: hazard each quarter")
+    a.set_xlabel("Quarters since vacant")
+    a.set_ylabel("P(lease this quarter | still vacant), %")
+    a.set_xticks([1, 4, 8, 12])
+    a.grid(axis="x", visible=False)
+    for c, col, lab in [(c_new, ACCENT, "New construction"), (c_rel, BLUE, "Re-lease")]:
+        b.plot(np.r_[0, q], np.r_[0, c] * 100, color=col, marker="o", markersize=4.5,
+               markeredgecolor="white", markeredgewidth=1.2, label=lab)
+    b.axvline(8, color=INK, linewidth=1, linestyle=(0, (3, 3)))
+    b.text(8.2, 6, "8-quarter\nhorizon", fontsize=9, color=INK)
+    b.set_ylim(0, 100)
+    b.set_xticks([0, 4, 8, 12])
+    b.set_title("Step 2: roll into a lease-up curve")
+    b.set_xlabel("Quarters since vacant")
+    b.set_ylabel("P(leased by quarter), %")
+    b.text(8.2 + 0.1, c_new[7] * 100 + 3, f"{c_new[7]*100:.0f}%", fontsize=9, color=INK)
+    b.text(8.2 + 0.1, c_rel[7] * 100 - 7, f"{c_rel[7]*100:.0f}%", fontsize=9, color=INK)
+    h, l = b.get_legend_handles_labels()
+    fig.legend(h, l, loc="lower center", ncol=2, fontsize=9.5, bbox_to_anchor=(0.5, -0.03))
+    fig.tight_layout(rect=(0, 0.07, 1, 1), w_pad=2.5)
+    save(fig, "fig-ind-survival.svg")
+
+
+def ind_catchment():
+    """A 15-minute drive-time catchment around one warehouse (synthetic)."""
+    rng = np.random.default_rng(14)
+    fig, ax = plt.subplots(figsize=(7.6, 3.6))
+    ang = np.linspace(0, 2 * np.pi, 13)[:-1]
+    r = 1 + 0.35 * np.sin(3 * ang) + rng.uniform(-0.15, 0.15, len(ang))
+    r[[2, 3]] += 0.6          # stretched along the highway
+    r[[8, 9]] += 0.5
+    px, py = r * np.cos(ang), r * np.sin(ang)
+    ax.fill(np.r_[px, px[0]], np.r_[py, py[0]], color=ACCENT, alpha=0.10, linewidth=0)
+    ax.plot(np.r_[px, px[0]], np.r_[py, py[0]], color=ACCENT, linewidth=1.5)
+    ax.plot([-2.6, 2.6], [-1.6, 1.9], color=INK, linewidth=3, solid_capstyle="butt")
+    ax.text(2.0, 1.95, "highway", fontsize=9, color=INK)
+    bx = rng.uniform(-2.5, 2.5, 60); by = rng.uniform(-1.8, 1.8, 60)
+    from matplotlib.path import Path as MPath
+    inside = MPath(np.c_[px, py]).contains_points(np.c_[bx, by])
+    same = rng.random(60) < 0.6
+    ax.scatter(bx[inside & same], by[inside & same], s=34, marker="s", color=BLUE, edgecolor="white", linewidth=1, label="Same-subtype buildings (counted)", zorder=3)
+    ax.scatter(bx[inside & ~same], by[inside & ~same], s=34, marker="s", facecolor="white", edgecolor=BLUE, linewidth=1.2, label="Other subtypes (excluded)", zorder=3)
+    ax.scatter(bx[~inside], by[~inside], s=20, marker="s", color=QUIET, linewidth=0, label="Outside 15 minutes", zorder=2)
+    ax.scatter([0], [0], s=160, marker="*", color=ACCENT, edgecolor="white", linewidth=1, zorder=4, label="Subject warehouse")
+    ax.scatter([1.9], [-1.25], s=60, marker="^", color=INK, zorder=4)
+    ax.text(1.98, -1.5, "port", fontsize=9, color=INK)
+    ax.set_xlim(-2.7, 2.9); ax.set_ylim(-1.9, 2.3)
+    ax.set_xticks([]); ax.set_yticks([]); ax.grid(False)
+    for sp in ax.spines.values():
+        sp.set_visible(False)
+    ax.set_aspect("equal")
+    ax.set_title("15-minute drive-time catchment (illustrative)")
+    ax.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), fontsize=9.5, frameon=False)
+    fig.tight_layout()
+    save(fig, "fig-ind-catchment.svg")
+
+
+def ind_terciles():
+    """Tercile test: forward rent growth by exposure to an outside signal."""
+    fig, ax = plt.subplots(figsize=(7.6, 3.0))
+    labels = ["Low exposure", "Mid exposure", "High exposure"]
+    vals = [3.1, 3.9, 5.2]
+    ax.barh(labels[::-1], vals[::-1], height=0.42, color=[ACCENT, QUIET, QUIET])
+    for i, v in enumerate(vals[::-1]):
+        ax.text(v + 0.08, i, f"{v:.1f}%", va="center", fontsize=9.5, color=INK)
+    ax.set_xlim(0, 6.2)
+    ax.set_xlabel("Forward 3-year rent growth, annualized (synthetic)")
+    ax.set_title("Does the signal separate winners from losers?")
+    ax.grid(axis="y", visible=False)
+    fig.tight_layout()
+    save(fig, "fig-ind-terciles.svg")
+
+
 if __name__ == "__main__":
     sfr_matching()
     sfr_index()
@@ -357,3 +502,8 @@ if __name__ == "__main__":
     sfr_avm()
     sfr_returns()
     sfr_simulation()
+    ind_signals()
+    ind_beta()
+    ind_survival()
+    ind_catchment()
+    ind_terciles()

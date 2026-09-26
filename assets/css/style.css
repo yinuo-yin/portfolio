@@ -149,3 +149,13 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
 .system svg a:hover rect, .system svg a:focus rect { stroke: #b4491f; stroke-width: 2; }
 .system svg a { cursor: pointer; }
 @media (max-width: 760px) { .system svg { min-width: 680px; } .system figcaption::after { content: " Scroll sideways to see the full diagram."; } }
+
+/* ---------- example output card ---------- */
+.stat-card { border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 24px; margin: 24px 0 8px; background: var(--wash); }
+.stat-card-title { font: 600 12px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin: 0; }
+.stat-card-sub { margin: 4px 0 16px; font-size: 15px; color: var(--muted); }
+.stat-card dl { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 0; }
+.stat-card dt { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.stat-card dd { margin: 4px 0 0; font: 700 28px var(--display); color: var(--ink); }
+@media (max-width: 760px) { .stat-card dl { grid-template-columns: repeat(2, 1fr); } }
+.prose .stat-card-title { color: var(--accent); }
